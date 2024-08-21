@@ -32,16 +32,16 @@ public class TodoRepository : ITodoRepository
     }
 
     public TodoEntity UpdateTodo(
-        TodoVO todoValues,
+        TodoVO todoVO,
         TodoEntity todoEntity
     )
     {
         todoEntity.Id = todoEntity.Id;
         todoEntity.TimeStamp = todoEntity.TimeStamp;
-        todoEntity.Title = todoValues.Title;
-        todoEntity.Author = todoValues.Author;
-        todoEntity.Description = todoValues.Description;
-        todoEntity.Done = todoValues.Done;
+        todoEntity.Title = todoVO.Title;
+        todoEntity.Author = todoVO.Author;
+        todoEntity.Description = todoVO.Description;
+        todoEntity.Done = todoVO.Done;
         return todoEntity;
     }
 

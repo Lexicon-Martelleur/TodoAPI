@@ -9,6 +9,7 @@ namespace TodoAPI.Models.Services
         Task DeleteTodo(int id);
         Task<IEnumerable<TodoDTO>> GetTodoEntities();
         Task<TodoDTO?> GetTodoEntity(int id);
-        Task<TodoDTO?> UpdateTodo(int id, TodoVO todoValues);
+        Task<TodoDTO?> UpdateTodo(int id, TodoVO todoVO);
+        Task<TodoDTO?> PatchTodo(int id, TodoVO todoVO);
     }
 }

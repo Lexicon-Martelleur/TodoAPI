@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 using TodoAPI.Constants;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Services;
+using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Controllers
 {
@@ -62,15 +64,27 @@ namespace TodoAPI.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<TodoDTO>> PatchTodo(int id, TodoDTO todo)
+        public async Task<ActionResult<TodoDTO>> PatchTodo(
+            int id,
+            JsonPatchDocument<TodoVO> todoPatchDocument
+        )
         {
-            var updatedTodo = await _todoService.UpdateTodo(id, todo.Todo);
-            if (todo == null)
+            var todoToPatch = await _todoService.GetTodoEntity(id);
+            if (todoToPatch == null)
             {
                 _logger.LogInformation($"No todo of id={id} find");
                 return NotFound();
             }
-            return Ok(updatedTodo);
+
+            todoPatchDocument.ApplyTo(todoToPatch.Todo, ModelState);
+            if (!ModelState.IsValid || !TryValidateModel(todoToPatch))
+            {
+                return BadRequest(ModelState);
+            }
+
+            var todo = await _todoService.PatchTodo(id, todoToPatch.Todo);
+            if (todo == null) { return NotFound(); }
+            return Ok(todo);
         }
 
         [HttpDelete("{id}")]

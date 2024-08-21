@@ -11,7 +11,7 @@ public interface ITodoRepository
 
     Task AddTodo(TodoEntity todo);
 
-    TodoEntity UpdateTodo(TodoVO todoValues, TodoEntity todo);
+    TodoEntity UpdateTodo(TodoVO todoVO, TodoEntity todo);
 
     Task DeleteTodo(int id);
 
