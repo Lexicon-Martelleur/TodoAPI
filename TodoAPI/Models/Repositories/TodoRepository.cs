@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.DBContext;
 using TodoAPI.Entities;
-using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Models.Repositories;
 
@@ -30,20 +29,6 @@ public class TodoRepository : ITodoRepository
         await _context.Todos.AddAsync(todo);
         await SaveChanges();
     }
-
-    //public TodoEntity UpdateTodo(
-    //    TodoVO todoVO,
-    //    TodoEntity todoEntity
-    //)
-    //{
-    //    todoEntity.Id = todoEntity.Id;
-    //    todoEntity.TimeStamp = todoEntity.TimeStamp;
-    //    todoEntity.Title = todoVO.Title;
-    //    todoEntity.Author = todoVO.Author;
-    //    todoEntity.Description = todoVO.Description;
-    //    todoEntity.Done = todoVO.Done;
-    //    return todoEntity;
-    //}
 
     public async Task DeleteTodo(int id)
     {
