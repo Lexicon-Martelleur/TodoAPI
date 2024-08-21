@@ -15,6 +15,12 @@ public class Program
     
     public static void Main(string[] args)
     {
+        var app = CreateWebApplication(args);
+        ConfigureWebApplicationPipeline(app);
+    }
+
+    private static WebApplication CreateWebApplication (string[] args)
+    {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
             .WriteTo.Console()
@@ -22,25 +28,27 @@ public class Program
             .CreateLogger();
 
         var builder = WebApplication.CreateBuilder(args);
-        
+
         builder.Host.UseSerilog();
 
         builder.Services.AddProblemDetails();
 
         builder.Services.AddControllers();
-        
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-        
+
         builder.Services.AddSwaggerGen();
 
         AddAppServices(builder);
 
         AddCorsPolicy(builder);
-        
-        var app = builder.Build();
 
-        // Configure the HTTP request pipeline.
+        return builder.Build();
+    }
+
+    private static void ConfigureWebApplicationPipeline(WebApplication app)
+    {
         UseCorsPolicy(app);
 
         if (app.Environment.IsDevelopment())
@@ -74,14 +82,18 @@ public class Program
         }
 
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
         if (builder.Environment.IsDevelopment())
         {
             Console.WriteLine($"Connection String: {connectionString}");
         }
+
         builder.Services.AddDbContext<TodoContext>(options =>
         {
             options.UseSqlServer(connectionString);
+            if (builder.Environment.IsDevelopment())
+            {
+                options.EnableSensitiveDataLogging();
+            }
         });
     }
 
@@ -115,5 +127,4 @@ public class Program
             app.UseCors(CorsPolicies.Prod);
         }
     }
-
 }
