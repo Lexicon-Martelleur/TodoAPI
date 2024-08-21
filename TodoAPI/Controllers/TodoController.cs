@@ -61,6 +61,18 @@ namespace TodoAPI.Controllers
             return Ok(updatedTodo);
         }
 
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<TodoDTO>> PatchTodo(int id, TodoDTO todo)
+        {
+            var updatedTodo = await _todoService.UpdateTodo(id, todo.Todo);
+            if (todo == null)
+            {
+                _logger.LogInformation($"No todo of id={id} find");
+                return NotFound();
+            }
+            return Ok(updatedTodo);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<TodoDTO>> DeleteTodo(int id)
         {
