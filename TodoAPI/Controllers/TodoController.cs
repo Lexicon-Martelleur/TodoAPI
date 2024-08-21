@@ -15,7 +15,7 @@ namespace TodoAPI.Controllers
     {
         private readonly ILogger<TodoController> _logger;
         private readonly TodoStore _todoStore; // In Memory
-        private readonly ITodoRepository _todoRepository;  // In Persitent
+        private readonly ITodoRepository _todoRepository;  // In Persistent
         private readonly IMapper _mapper;
 
         public TodoController(
@@ -58,9 +58,42 @@ namespace TodoAPI.Controllers
         {
             var todoEntity = _mapper.Map<TodoEntity>(todo);
             await _todoRepository.AddTodo(todoEntity);
-            await _todoRepository.SaveChanges();
             var createdTodo = _mapper.Map<TodoDTO>(todoEntity);
             return CreatedAtRoute("CreateTodo", createdTodo);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<TodoDTO>> UpdateTodo(int id, TodoDTO todo)
+        {
+            var todoEntity = await _todoRepository.GetTodoEntity(id);
+            if (todoEntity == null)
+            {
+                _logger.LogInformation($"No todo of id={id} find");
+                return NotFound();
+            }
+
+            // TODO! Auto Mapping does not work with the profile created due
+            // new instance is created.
+            // Id is ignored does not work?
+            // var updatedTodo = _mapper.Map(todo, todoEntity);
+            // await _todoRepository.SaveChanges();
+
+            var updatedTodo = await _todoRepository.UpdateTodo(todo.Todo, todoEntity);
+            return Ok(_mapper.Map<TodoDTO>(updatedTodo));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<TodoDTO>> DeleteTodo(int id)
+        {
+            var todoEntity = await _todoRepository.GetTodoEntity(id);
+            if (todoEntity == null)
+            {
+                _logger.LogInformation($"No todo of id={id} find");
+                return NotFound();
+            }
+            await _todoRepository.DeleteTodo(id);
+            return Ok(new { id });
+        }
+
     }
 }
