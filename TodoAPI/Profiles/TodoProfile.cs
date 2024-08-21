@@ -16,5 +16,13 @@ public class TodoProfile : Profile
             .ForMember(dest => dest.TimeStamp, opt => opt.MapFrom(src => src.TimeStamp))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
+        CreateMap<TodoDTO, TodoEntity>()
+            .ConstructUsing(dto => new TodoEntity(
+                dto.TimeStamp,
+                dto.Todo.Title,
+                dto.Todo.Author,
+                dto.Todo.Description,
+                dto.Todo.Done))
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
     }
 }

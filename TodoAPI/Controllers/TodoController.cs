@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
 using TodoAPI.Constants;
+using TodoAPI.Entities;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.ValueObject;
 using TodoAPI.Repositories;
@@ -13,8 +14,8 @@ namespace TodoAPI.Controllers
     public class TodoController : ControllerBase
     {
         private readonly ILogger<TodoController> _logger;
-        private readonly TodoStore _todoStore;
-        private readonly ITodoRepository _todoRepository;
+        private readonly TodoStore _todoStore; // In Memory
+        private readonly ITodoRepository _todoRepository;  // In Persitent
         private readonly IMapper _mapper;
 
         public TodoController(
@@ -50,6 +51,16 @@ namespace TodoAPI.Controllers
                 return NotFound();
             }
             return Ok(_mapper.Map<TodoDTO>(todoEntity));
+        }
+
+        [HttpPost(Name = "CreateTodo")]
+        public async Task<ActionResult<TodoDTO>> CreateTodo(TodoDTO todo)
+        {
+            var todoEntity = _mapper.Map<TodoEntity>(todo);
+            await _todoRepository.AddTodo(todoEntity);
+            await _todoRepository.SaveChanges();
+            var createdTodo = _mapper.Map<TodoDTO>(todoEntity);
+            return CreatedAtRoute("CreateTodo", createdTodo);
         }
     }
 }

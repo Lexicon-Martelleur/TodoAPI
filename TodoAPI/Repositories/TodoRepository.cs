@@ -23,4 +23,14 @@ public class TodoRepository : ITodoRepository
             .Where(item => item.Id == id)
             .FirstOrDefaultAsync();
     }
+
+    public async Task AddTodo(TodoEntity entity)
+    {
+        await _context.Todos.AddAsync(entity);
+    }
+
+    public async Task<bool> SaveChanges()
+    {
+        return (await _context.SaveChangesAsync() >= 1);
+    }
 }
