@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using TodoAPI.Data;
 using TodoAPI.DBContext;
+using TodoAPI.Repositories;
 
 namespace TodoAPI;
 
@@ -26,15 +26,18 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        // Add store
         // Configure the HTTP request pipeline.
+
+        // Add store
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        builder.Services.AddSingleton<TodoStore>(); // In Memory
+        builder.Services.AddScoped<ITodoRepository, TodoRepository>(); // In Persistent
+
         if (builder.Environment.IsDevelopment())
         {
             builder.Configuration.AddUserSecrets<Program>();
         }
-        builder.Services.AddSingleton<TodoStore>(); // In Memory
         
-
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
         if (builder.Environment.IsDevelopment())

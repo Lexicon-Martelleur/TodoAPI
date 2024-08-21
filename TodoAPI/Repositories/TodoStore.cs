@@ -1,10 +1,10 @@
 ﻿using TodoAPI.Models.DTO;
 
-namespace TodoAPI.Data;
+namespace TodoAPI.Repositories;
 
 public class TodoStore
 {
-    public List<TodoDTO>  Todos { get; set; }
+    public List<TodoDTO> Todos { get; set; }
 
     public static TodoStore Current { get; set; } = new TodoStore();
 
@@ -14,7 +14,7 @@ public class TodoStore
             new()
             {
                 Id = 1,
-                TimeStamp = 1,
+                TimeStamp = "1724162544",
                 Todo = new()
                 {
                     Title = "Test 1",
@@ -26,7 +26,7 @@ public class TodoStore
             new()
             {
                 Id = 1,
-                TimeStamp = 2,
+                TimeStamp = "1724162544",
                 Todo = new()
                 {
                     Title = "Test 2",
@@ -38,7 +38,7 @@ public class TodoStore
             new()
             {
                 Id = 3,
-                TimeStamp = 3,
+                TimeStamp = "1724162544",
                 Todo = new()
                 {
                     Title = "Test 3",

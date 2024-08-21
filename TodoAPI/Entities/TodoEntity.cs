@@ -1,13 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TodoAPI.Entities;
 
-public class TodoValueEntity
+public class TodoEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
+
+    [Required]
+    [MaxLength(1000)]
+    public string TimeStamp { get; set; }
 
     [Required]
     [MaxLength(1000)]
@@ -18,24 +22,21 @@ public class TodoValueEntity
     public string Author { get; set; }
 
     [Required]
-    [MaxLength(1000)]
+    [MaxLength(10000)]
     public string Description { get; set; }
 
     [Required]
     public bool Done { get; set; }
 
-    [ForeignKey(nameof(TodoTimeEntityId))]
-    public TodoTimeEntity? TodoEntity { get; set; }
-    
-    public int TodoTimeEntityId { get; set; }
-
-    public TodoValueEntity(
+    public TodoEntity(
+        string timeStamp,
         string title,
         string author,
         string description,
         bool done
     )
     {
+        TimeStamp = timeStamp;
         Title = title;
         Author = author;
         Description = description;
