@@ -14,7 +14,7 @@ public class TodoStore
             new()
             {
                 Id = 1,
-                TimeStamp = "1724162544",
+                Timestamp = "1724162544",
                 Todo = new()
                 {
                     Title = "Test 1",
@@ -26,7 +26,7 @@ public class TodoStore
             new()
             {
                 Id = 1,
-                TimeStamp = "1724162544",
+                Timestamp = "1724162544",
                 Todo = new()
                 {
                     Title = "Test 2",
@@ -38,7 +38,7 @@ public class TodoStore
             new()
             {
                 Id = 3,
-                TimeStamp = "1724162544",
+                Timestamp = "1724162544",
                 Todo = new()
                 {
                     Title = "Test 3",

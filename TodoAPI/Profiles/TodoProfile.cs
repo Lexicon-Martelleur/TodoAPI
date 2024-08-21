@@ -13,12 +13,12 @@ public class TodoProfile : Profile
             .ForPath(dest => dest.Todo.Author, opt => opt.MapFrom(src => src.Author))
             .ForPath(dest => dest.Todo.Description, opt => opt.MapFrom(src => src.Description))
             .ForPath(dest => dest.Todo.Done, opt => opt.MapFrom(src => src.Done))
-            .ForMember(dest => dest.TimeStamp, opt => opt.MapFrom(src => src.TimeStamp))
+            .ForMember(dest => dest.Timestamp, opt => opt.MapFrom(src => src.TimeStamp))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
         CreateMap<TodoDTO, TodoEntity>()
             .ConstructUsing(dto => new TodoEntity(
-                dto.TimeStamp,
+                dto.Timestamp,
                 dto.Todo.Title,
                 dto.Todo.Author,
                 dto.Todo.Description,
