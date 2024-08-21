@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TodoAPI.DBContext;
-using TodoAPI.Repositories;
+using TodoAPI.Models.Repositories;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI;
 
@@ -24,25 +25,24 @@ public class Program
         
         builder.Host.UseSerilog();
 
-        // Add services to the container.
         builder.Services.AddProblemDetails();
 
         builder.Services.AddControllers();
+        
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
+        
         builder.Services.AddSwaggerGen();
 
-        // Configure the HTTP request pipeline.
-
-        AddStorage(builder);
+        AddAppServices(builder);
 
         AddCorsPolicy(builder);
         
         var app = builder.Build();
 
+        // Configure the HTTP request pipeline.
         UseCorsPolicy(app);
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -62,11 +62,11 @@ public class Program
         app.Run();
     }
 
-    private static void AddStorage (WebApplicationBuilder builder)
+    private static void AddAppServices (WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        builder.Services.AddSingleton<TodoStore>(); // In Memory
-        builder.Services.AddScoped<ITodoRepository, TodoRepository>(); // In Persistent
+        builder.Services.AddScoped<ITodoService, TodoService>();
+        builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 
         if (builder.Environment.IsDevelopment())
         {

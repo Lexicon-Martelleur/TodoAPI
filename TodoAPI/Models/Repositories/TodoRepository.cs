@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.DBContext;
 using TodoAPI.Entities;
-using TodoAPI.Models.DTO;
 using TodoAPI.Models.ValueObject;
 
-namespace TodoAPI.Repositories;
+namespace TodoAPI.Models.Repositories;
 
 public class TodoRepository : ITodoRepository
 {
@@ -26,29 +25,24 @@ public class TodoRepository : ITodoRepository
             .FirstOrDefaultAsync();
     }
 
-
-
-    // TODO: Can i use void here instead of async/Task
-    // due Add is an in memory ops instead of an I/= ops?
     public async Task AddTodo(TodoEntity todo)
     {
         await _context.Todos.AddAsync(todo);
         await SaveChanges();
     }
 
-    public async Task<TodoEntity?> UpdateTodo(
+    public TodoEntity UpdateTodo(
         TodoVO todoValues,
-        TodoEntity todo
+        TodoEntity todoEntity
     )
     {
-        todo.Id = todo.Id;
-        todo.TimeStamp = todo.TimeStamp;
-        todo.Title = todoValues.Title;
-        todo.Author = todoValues.Author;
-        todo.Description = todoValues.Description;
-        todo.Done = todoValues.Done;
-        await SaveChanges();
-        return todo;
+        todoEntity.Id = todoEntity.Id;
+        todoEntity.TimeStamp = todoEntity.TimeStamp;
+        todoEntity.Title = todoValues.Title;
+        todoEntity.Author = todoValues.Author;
+        todoEntity.Description = todoValues.Description;
+        todoEntity.Done = todoValues.Done;
+        return todoEntity;
     }
 
     public async Task DeleteTodo(int id)
@@ -56,17 +50,16 @@ public class TodoRepository : ITodoRepository
         var todoEntity = await _context.Todos
             .Where(item => item.Id == id)
             .FirstOrDefaultAsync();
-        
+
         if (todoEntity == default)
         {
             return;
         }
         _context.Todos.Remove(todoEntity);
-        await SaveChanges();
     }
 
     public async Task<bool> SaveChanges()
     {
-        return (await _context.SaveChangesAsync() >= 1);
+        return await _context.SaveChangesAsync() >= 1;
     }
 }

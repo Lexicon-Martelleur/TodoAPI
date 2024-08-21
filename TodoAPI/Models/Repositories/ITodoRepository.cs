@@ -1,7 +1,7 @@
 ﻿using TodoAPI.Entities;
 using TodoAPI.Models.ValueObject;
 
-namespace TodoAPI.Repositories;
+namespace TodoAPI.Models.Repositories;
 
 public interface ITodoRepository
 {
@@ -11,7 +11,7 @@ public interface ITodoRepository
 
     Task AddTodo(TodoEntity todo);
 
-    Task<TodoEntity?> UpdateTodo(TodoVO todoValues, TodoEntity todo);
+    TodoEntity UpdateTodo(TodoVO todoValues, TodoEntity todo);
 
     Task DeleteTodo(int id);
 
