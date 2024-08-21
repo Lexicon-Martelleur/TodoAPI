@@ -6,8 +6,8 @@ using TodoAPI.Models.Services;
 
 namespace TodoAPI.Controllers
 {
-    [ApiController]
     [Route(Router.TODOS)]
+    [ApiController]
     public class TodoController : ControllerBase
     {
         private readonly ILogger<TodoController> _logger;
