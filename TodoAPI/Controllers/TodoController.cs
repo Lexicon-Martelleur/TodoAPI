@@ -54,7 +54,7 @@ namespace TodoAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<TodoDTO>> UpdateTodo(int id, TodoDTO todo)
         {
-            var updatedTodo = await _todoService.UpdateTodo(id, todo.Todo);
+            var updatedTodo = await _todoService.UpdateTodo(id, todo);
             if (todo == null)
             {
                 _logger.LogInformation($"No todo of id={id} find");
@@ -82,7 +82,7 @@ namespace TodoAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var todo = await _todoService.PatchTodo(id, todoToPatch.Todo);
+            var todo = await _todoService.PatchTodo(id, todoToPatch);
             if (todo == null) { return NotFound(); }
             return Ok(todo);
         }

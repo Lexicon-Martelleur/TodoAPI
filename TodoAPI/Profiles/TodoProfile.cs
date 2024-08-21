@@ -17,12 +17,11 @@ public class TodoProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
         CreateMap<TodoDTO, TodoEntity>()
-            .ConstructUsing(dto => new TodoEntity(
-                dto.Timestamp,
-                dto.Todo.Title,
-                dto.Todo.Author,
-                dto.Todo.Description,
-                dto.Todo.Done))
-            .ForMember(dest => dest.Id, opt => opt.Ignore());
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.TimeStamp, opt => opt.MapFrom(src => src.Timestamp))
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Todo.Title))
+            .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Todo.Author))
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Todo.Description))
+            .ForMember(dest => dest.Done, opt => opt.MapFrom(src => src.Todo.Done));
     }
 }

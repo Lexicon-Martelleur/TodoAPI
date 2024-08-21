@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
 using TodoAPI.Entities;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Repositories;
-using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Models.Services;
 
@@ -44,38 +42,30 @@ public class TodoService : ITodoService
 
     public async Task<TodoDTO?> UpdateTodo(
         int id,
-        TodoVO todoVO
+        TodoDTO todoDTO
     )
     {
-        // TODO! Auto Mapping does not work with the profile created due
-        // new instance is created.
-        // var updatedTodo = _mapper.Map(todo, todoEntity);
-        // await _todoRepository.SaveChanges();
         var todoEntity = await _repository.GetTodoEntity(id);
         if (todoEntity == null)
         {
             return null;
         }
-        var updatedTodoEntity = _repository.UpdateTodo(todoVO, todoEntity);
+        var updatedTodoEntity = _mapper.Map(todoDTO, todoEntity);
         await _repository.SaveChanges();
         return _mapper.Map<TodoDTO>(updatedTodoEntity);
     }
 
     public async Task<TodoDTO?> PatchTodo(
         int id,
-        TodoVO todoVO
+        TodoDTO todoDTO
     )
     {
-        // TODO! Auto Mapping does not work with the profile created due
-        // new instance is created.
-        // var updatedTodo = _mapper.Map(todo, todoEntity);
-        // await _todoRepository.SaveChanges();
         var todoEntity = await _repository.GetTodoEntity(id);
-        if (todoEntity == null || todoVO == null)
+        if (todoEntity == null)
         {
             return null;
         }
-        var updatedTodoEntity = _repository.UpdateTodo(todoVO, todoEntity);
+        var updatedTodoEntity = _mapper.Map(todoDTO, todoEntity);
         await _repository.SaveChanges();
         return _mapper.Map<TodoDTO>(updatedTodoEntity);
     }

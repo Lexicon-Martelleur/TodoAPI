@@ -28,6 +28,15 @@ public class TodoEntity
     [Required]
     public bool Done { get; set; }
 
+    public TodoEntity()
+    {
+        TimeStamp = string.Empty;
+        Title = string.Empty;
+        Author = string.Empty;
+        Description = string.Empty;
+        Done = false;
+    }
+
     public TodoEntity(
         string timeStamp,
         string title,
