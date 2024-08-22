@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="Database" Category="Database" Bounds="-134.34985382249,-115.386721128388,420.04958,373.79423208" Group="Expanded" Label="TodoDBV1" />
+    <Node Id="Todos" Category="Table" Bounds="-94.3498538224903,-35.3867210883881,340.04958,253.794232" Group="Expanded" Label="Todos" />
+    <Node Id="Todos_Author" Category="NOT NULL" Bounds="-74.3605644992903,60.5564909116119,138.426666666667,25.96" Description="nvarchar(1000)" Label="Author nvarchar(1000)" />
+    <Node Id="Todos_Description" Category="NOT NULL" Bounds="-74.3618538224903,116.486894871612,158.16,25.96" Description="nvarchar(max)" Label="Description nvarchar(max)" />
+    <Node Id="Todos_Done" Category="NOT NULL" Bounds="5.63069583404305,4.60768291161189,65.8233333333333,25.96" Description="bit" Label="Done bit" />
+    <Node Id="Todos_Id" Category="PK" Bounds="-74.3517218326236,4.60768291161189,50,25.96" Description="int" Label="Id int" />
+    <Node Id="Todos_TimeStamp" Category="NOT NULL" Bounds="-74.3618538224903,172.435702871612,161.193333333333,25.96" Description="nvarchar(1000)" Label="TimeStamp nvarchar(1000)" />
+    <Node Id="Todos_Title" Category="NOT NULL" Bounds="101.429018834043,4.60768291161189,124.28,25.96" Description="nvarchar(1000)" Label="Title nvarchar(1000)" />
+    <Node Id="devadmin" Category="Schema" Bounds="-114.34985382249,-75.3867211083881,380.04958,313.79423204" Group="Expanded" Label="devadmin" />
+  </Nodes>
+  <Links>
+    <Link Source="Database" Target="devadmin" Category="Contains" />
+    <Link Source="Todos" Target="Todos_Author" Category="Contains" />
+    <Link Source="Todos" Target="Todos_Description" Category="Contains" />
+    <Link Source="Todos" Target="Todos_Done" Category="Contains" />
+    <Link Source="Todos" Target="Todos_Id" Category="Contains" />
+    <Link Source="Todos" Target="Todos_TimeStamp" Category="Contains" />
+    <Link Source="Todos" Target="Todos_Title" Category="Contains" />
+    <Link Source="devadmin" Target="Todos" Category="Contains" />
+  </Links>
+  <Categories>
+    <Category Id="Contains" Label="Contains" Description="Whether the source of the link contains the target object" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Contained By" IsContainment="True" OutgoingActionLabel="Contains" />
+    <Category Id="Database" />
+    <Category Id="NOT NULL" />
+    <Category Id="PK" />
+    <Category Id="Schema" />
+    <Category Id="Table" />
+  </Categories>
+  <Properties>
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="Description" Label="Description" Description="Description" DataType="System.String" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="Group" Label="Group" Description="Display the node as a group" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+  </Properties>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Table" ValueLabel="True">
+      <Condition Expression="HasCategory('Table')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Schema" ValueLabel="True">
+      <Condition Expression="HasCategory('Schema')" />
+      <Setter Property="Background" Value="#FF7F9169" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="PK" ValueLabel="True">
+      <Condition Expression="HasCategory('PK')" />
+      <Setter Property="Background" Value="#FF008000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="NULL" ValueLabel="True">
+      <Condition Expression="HasCategory('NULL')" />
+      <Setter Property="Background" Value="#FF808040" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="FK" ValueLabel="True">
+      <Condition Expression="HasCategory('FK')" />
+      <Setter Property="Background" Value="#FF8080FF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="NOT NULL" ValueLabel="True">
+      <Condition Expression="HasCategory('NOT NULL')" />
+      <Setter Property="Background" Value="#FFC0A000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Database" ValueLabel="True">
+      <Condition Expression="HasCategory('Database')" />
+      <Setter Property="Background" Value="#FFFFFFFF" />
+    </Style>
+  </Styles>
+</DirectedGraph>

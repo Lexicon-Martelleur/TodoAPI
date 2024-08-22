@@ -6,8 +6,7 @@ namespace TodoAPI.Models.Services
     {
         Task<TodoDTO> AddTodo(TodoDTO todo);
         Task DeleteTodo(int id);
-        Task<IEnumerable<TodoDTO>> GetTodoEntities();
-        Task<IEnumerable<TodoDTO>> GetTodoEntities(string? author, string? searchQuery);
+        Task<(IEnumerable<TodoDTO>, PaginationMetaData)> GetTodoEntities(TodoQueryDTO query);
         Task<TodoDTO?> GetTodoEntity(int id);
         Task<TodoDTO?> UpdateTodo(int id, TodoDTO todoVO);
         Task<TodoDTO?> PatchTodo(int id, TodoDTO todoVO);

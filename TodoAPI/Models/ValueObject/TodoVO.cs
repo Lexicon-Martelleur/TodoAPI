@@ -11,7 +11,7 @@ public record class TodoVO()
 
     
     [Required]
-    [MaxLength(TodoRestriction.MAX_AUTOR)]
+    [MaxLength(TodoRestriction.MAX_AUTHOR)]
     public string Author { get; init; } = string.Empty;
 
     [Required]

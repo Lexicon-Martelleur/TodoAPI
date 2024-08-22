@@ -1,12 +1,12 @@
 ﻿using TodoAPI.Entities;
+using TodoAPI.Models.DTO;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.Models.Repositories;
 
 public interface ITodoRepository
 {
-    Task<IEnumerable<TodoEntity>> GetTodoEntities();
-
-    Task<IEnumerable<TodoEntity>> GetTodoEntities(string? author, string? searchQuery);
+    Task<(IEnumerable<TodoEntity>, PaginationMetaData)> GetTodoEntities(TodoQueryDTO query);
 
     Task<TodoEntity?> GetTodoEntity(int id);
 

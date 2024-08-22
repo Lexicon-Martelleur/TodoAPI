@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Text.Json;
 using TodoAPI.Constants;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Services;
@@ -26,11 +26,14 @@ namespace TodoAPI.Controllers
 
         [HttpGet(Name = "GetTodos")]
         public async Task<ActionResult<IEnumerable<TodoDTO>>> GetTodos(
-            [FromQuery] string? author,
-            [FromQuery] string? searchQuery
+            [FromQuery] TodoQueryDTO query
         )
         {
-            var todos = await _todoService.GetTodoEntities(author, searchQuery);
+            var (todos, paginationMetaData) = await _todoService.GetTodoEntities(query);
+            Response.Headers.Append(
+                "X-Pagination",
+                JsonSerializer.Serialize(paginationMetaData)
+            );
             return Ok(todos ?? []);
         }
 

@@ -19,22 +19,16 @@ public class TodoService : ITodoService
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<IEnumerable<TodoDTO>> GetTodoEntities()
+    public async Task<(IEnumerable<TodoDTO>, PaginationMetaData)> GetTodoEntities(
+        TodoQueryDTO query
+    )
     {
-        var todoEntities = await _repository.GetTodoEntities();
-        return _mapper.Map<IEnumerable<TodoDTO>>(todoEntities);
-    }
-
-    public async Task<IEnumerable<TodoDTO>> GetTodoEntities(string? author, string? searchQuery)
-    {
-        if (author == null && searchQuery == null)
-        {
-            return await GetTodoEntities();
-        }
-
-        var todoEntities = 
-            await _repository.GetTodoEntities(author, searchQuery);
-        return _mapper.Map<IEnumerable<TodoDTO>>(todoEntities);
+        var (todoEntities, pagingMetaData) = 
+            await _repository.GetTodoEntities(query);
+        return (
+            _mapper.Map<IEnumerable<TodoDTO>>(todoEntities),
+            pagingMetaData
+        );
     }
 
     public async Task<TodoDTO?> GetTodoEntity(int id)

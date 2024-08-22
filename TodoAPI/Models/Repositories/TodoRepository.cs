@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.DBContext;
 using TodoAPI.Entities;
+using TodoAPI.Models.DTO;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.Models.Repositories;
 
@@ -12,11 +14,6 @@ public class TodoRepository : ITodoRepository
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<IEnumerable<TodoEntity>> GetTodoEntities()
-    {
-        return await _context.Todos.ToListAsync();
-    }
-
     /// <summary>
     /// A combined method for searching and filtering using
     /// deferred execution
@@ -24,36 +21,46 @@ public class TodoRepository : ITodoRepository
     /// <param name="author"></param>
     /// <param name="searchQuery"></param>
     /// <returns></returns>
-    public async Task<IEnumerable<TodoEntity>> GetTodoEntities(
-        string? author,
-        string? searchQuery
+    public async Task<(IEnumerable<TodoEntity>, PaginationMetaData)> GetTodoEntities(
+        TodoQueryDTO query
     )
     {
-        if (author == null && searchQuery == null)
+        var todoCollection = _context.Todos as IQueryable<TodoEntity>;
+
+        if (!string.IsNullOrWhiteSpace(query.Author))
         {
-            return await GetTodoEntities();
+            var trimedAuthor = query.Author.Trim();
+            todoCollection = todoCollection.Where(item => item.Author == trimedAuthor);
         }
 
-        var collection = _context.Todos as IQueryable<TodoEntity>;
-
-        if (!string.IsNullOrWhiteSpace(author))
+        if (query.Done != null)
         {
-            author = author.Trim();
-            collection = collection.Where(item => item.Author == author);
-
+            todoCollection = todoCollection.Where(item => item.Done == query.Done);
         }
 
-        if (!string.IsNullOrWhiteSpace(searchQuery))
+        if (!string.IsNullOrWhiteSpace(query.SearchQuery))
         {
-            searchQuery = searchQuery.Trim();
-            collection = collection.Where(item => 
-                item.Description.Contains(searchQuery) ||
-                item.Title.Contains(searchQuery));
+            var trimedSearchQuery = query.SearchQuery.Trim();
+            todoCollection = todoCollection.Where(item => 
+                item.Description.Contains(trimedSearchQuery) ||
+                item.Title.Contains(trimedSearchQuery));
         }
 
-        return await collection
+        var tottalItemCount = await todoCollection.CountAsync();
+
+        var paginationMetatData = new PaginationMetaData(
+            tottalItemCount,
+            query.PageSize,
+            query.PageNr
+        );
+
+        var todos = await todoCollection
             .OrderBy(item => item.Author)
+            .Skip(query.PageSize * (query.PageNr - 1))
+            .Take(query.PageSize)
             .ToListAsync();
+
+        return (todos, paginationMetatData);
     }
 
     public async Task<TodoEntity?> GetTodoEntity(int id)
@@ -66,7 +73,6 @@ public class TodoRepository : ITodoRepository
     public async Task AddTodo(TodoEntity todo)
     {
         await _context.Todos.AddAsync(todo);
-        await SaveChanges();
     }
 
     public async Task DeleteTodo(int id)
