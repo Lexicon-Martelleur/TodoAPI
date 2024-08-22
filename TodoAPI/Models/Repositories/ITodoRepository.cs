@@ -6,6 +6,8 @@ public interface ITodoRepository
 {
     Task<IEnumerable<TodoEntity>> GetTodoEntities();
 
+    Task<IEnumerable<TodoEntity>> GetTodoEntities(string? author, string? searchQuery);
+
     Task<TodoEntity?> GetTodoEntity(int id);
 
     Task AddTodo(TodoEntity todo);

@@ -25,9 +25,12 @@ namespace TodoAPI.Controllers
         }
 
         [HttpGet(Name = "GetTodos")]
-        public async Task<ActionResult<IEnumerable<TodoDTO>>> GetTodos()
+        public async Task<ActionResult<IEnumerable<TodoDTO>>> GetTodos(
+            [FromQuery] string? author,
+            [FromQuery] string? searchQuery
+        )
         {
-            var todos = await _todoService.GetTodoEntities();
+            var todos = await _todoService.GetTodoEntities(author, searchQuery);
             return Ok(todos ?? []);
         }
 

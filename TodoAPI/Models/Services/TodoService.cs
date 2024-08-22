@@ -25,6 +25,18 @@ public class TodoService : ITodoService
         return _mapper.Map<IEnumerable<TodoDTO>>(todoEntities);
     }
 
+    public async Task<IEnumerable<TodoDTO>> GetTodoEntities(string? author, string? searchQuery)
+    {
+        if (author == null && searchQuery == null)
+        {
+            return await GetTodoEntities();
+        }
+
+        var todoEntities = 
+            await _repository.GetTodoEntities(author, searchQuery);
+        return _mapper.Map<IEnumerable<TodoDTO>>(todoEntities);
+    }
+
     public async Task<TodoDTO?> GetTodoEntity(int id)
     {
         var todo = await _repository.GetTodoEntity(id);

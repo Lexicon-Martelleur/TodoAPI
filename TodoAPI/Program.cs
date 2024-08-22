@@ -38,29 +38,7 @@ public class Program
 
         return builder.Build();
     }
-
-    private static void ConfigureWebApplicationPipeline(WebApplication app)
-    {
-        UseCorsPolicy(app);
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-        else
-        {
-            app.UseHttpsRedirection();
-            app.UseExceptionHandler();
-        }
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        app.Run();
-    }
-
+    
     private static void AddCustomLogging(WebApplicationBuilder builder)
     {
         Log.Logger = new LoggerConfiguration()
@@ -155,9 +133,31 @@ public class Program
 
             options.AddPolicy(CorsPolicies.Prod, builder =>
             {
-                builder.WithOrigins("https://yourproductiondomain.com");
+                builder.WithOrigins("https://my-todo.org");
             });
         });
+    }
+
+    private static void ConfigureWebApplicationPipeline(WebApplication app)
+    {
+        UseCorsPolicy(app);
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+        else
+        {
+            app.UseHttpsRedirection();
+            app.UseExceptionHandler();
+        }
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
     }
 
     private static void UseCorsPolicy(WebApplication app)
