@@ -28,15 +28,9 @@ public class Program
 
         AddCustomGlobalErrorHandling(builder);
 
-        builder.Services.AddControllers(options =>
-        {
-            options.ReturnHttpNotAcceptable = true;
-        }).AddNewtonsoftJson();
+        AddAndConfigureAppControllers(builder);
 
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddSwaggerGen();
+        AddSwaggerService(builder);
 
         AddAppServices(builder);
 
@@ -90,7 +84,7 @@ public class Program
                     context.ProblemDetails.Title = "Resource not implemented";
                     context.ProblemDetails.Detail = context.Exception.Message;
                 }
-                else
+                else if (context.Exception != null)
                 {
                     context.ProblemDetails.Status = StatusCodes.Status500InternalServerError;
                     context.ProblemDetails.Title = "An unexpected error occurred";
@@ -98,6 +92,26 @@ public class Program
                 }
             };
         });
+    }
+
+    private static void AddAndConfigureAppControllers(WebApplicationBuilder builder)
+    {
+        builder.Services.AddControllers(options =>
+        {
+            // If client explicit define format in accept header
+            // // then respond with 406 Not Acceptable if server not support format.
+            options.ReturnHttpNotAcceptable = true;
+        })
+            .AddNewtonsoftJson() // Instead of System.Text.Json, used to support patch request
+            .AddXmlDataContractSerializerFormatters(); // Used to support XML format.
+    }
+
+    private static void AddSwaggerService(WebApplicationBuilder builder)
+    {
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddSwaggerGen();
     }
 
     private static void AddAppServices (WebApplicationBuilder builder)
