@@ -32,8 +32,7 @@
     "httpLocalNet": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchBrowser": false,
       "applicationUrl": "http://192.168.0.36:5114",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -42,8 +41,7 @@
     "httpsLocalNet": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchBrowser": false,
       "applicationUrl": "https://192.168.0.36:7092;http://192.168.0.36:5114",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
