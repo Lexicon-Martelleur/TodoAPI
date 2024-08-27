@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using TodoAPI.Constants;
 using TodoAPI.DBContext;
 using TodoAPI.Models.Repositories;
 using TodoAPI.Models.Services;
@@ -21,7 +22,6 @@ public class Program
 
     private static WebApplication CreateWebApplication (string[] args)
     {
-
         var builder = WebApplication.CreateBuilder(args);
 
         AddCustomLogging(builder);
@@ -31,6 +31,8 @@ public class Program
         AddAndConfigureAppControllers(builder);
 
         AddSwaggerService(builder);
+
+        AddDBContext(builder);
 
         AddAppServices(builder);
 
@@ -92,22 +94,16 @@ public class Program
         builder.Services.AddSwaggerGen();
     }
 
-    private static void AddAppServices (WebApplicationBuilder builder)
+    private static void AddDBContext (WebApplicationBuilder builder)
     {
-        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        builder.Services.AddScoped<ITodoService, TodoService>();
-        builder.Services.AddScoped<ITodoRepository, TodoRepository>();
-
         if (builder.Environment.IsDevelopment())
         {
             builder.Configuration.AddUserSecrets<Program>();
         }
 
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        if (builder.Environment.IsDevelopment())
-        {
-            Console.WriteLine($"Connection String: {connectionString}");
-        }
+        var connectionString = builder.Configuration.GetConnectionString(
+            "DefaultConnection"
+        ) ?? throw new InvalidOperationException("Default connection string not found.");
 
         builder.Services.AddDbContext<TodoContext>(options =>
         {
@@ -119,6 +115,13 @@ public class Program
         });
     }
 
+    private static void AddAppServices(WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        builder.Services.AddScoped<ITodoService, TodoService>();
+        builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+    }
+
     private static void AddCorsPolicy (WebApplicationBuilder builder)
     {
 
@@ -127,19 +130,25 @@ public class Program
             options.AddPolicy(CorsPolicies.Dev, builder =>
             {
                 builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders(CustomHeader.Pagination);
             });
 
             options.AddPolicy(CorsPolicies.Prod, builder =>
             {
-                builder.WithOrigins("https://my-todo.org");
+                builder.WithOrigins("https://my-todo.org")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders(CustomHeader.Pagination);
             });
         });
     }
 
     private static void ConfigureWebApplicationPipeline(WebApplication app)
     {
+        TestDBConnection(app);
+
         UseCorsPolicy(app);
 
         if (app.Environment.IsDevelopment())
@@ -158,6 +167,22 @@ public class Program
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static void TestDBConnection(WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TodoContext>();
+        try
+        {
+            dbContext.Database.OpenConnection();
+            dbContext.Database.CloseConnection();
+            Console.WriteLine("Successfully connected to the database.");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Failed to connect to the database: {e.Message}");
+        }
     }
 
     private static void UseCorsPolicy(WebApplication app)

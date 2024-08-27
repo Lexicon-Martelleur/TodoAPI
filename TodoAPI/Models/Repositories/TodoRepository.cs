@@ -55,7 +55,6 @@ public class TodoRepository : ITodoRepository
         );
 
         var todos = await todoCollection
-            .OrderBy(item => item.Author)
             .Skip(query.PageSize * (query.PageNr - 1))
             .Take(query.PageSize)
             .ToListAsync();

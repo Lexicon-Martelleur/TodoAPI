@@ -1,7 +1,6 @@
-﻿namespace TodoAPI.Constants
+﻿namespace TodoAPI.Constants;
+
+internal class Router
 {
-    internal class Router
-    {
-        internal const string TODOS = $"api/todo";
-    }
+    internal const string TODOS = "api/todo";
 }
