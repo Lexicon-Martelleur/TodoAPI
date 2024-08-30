@@ -2,6 +2,7 @@
 using TodoAPI.Entities;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Repositories;
+using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Models.Services;
 
@@ -19,7 +20,7 @@ public class TodoService : ITodoService
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<(IEnumerable<TodoDTO>, PaginationMetaData)> GetTodoEntities(
+    public async Task<(IEnumerable<TodoDTO>, PaginationVO)> GetTodoEntities(
         TodoQueryDTO query
     )
     {

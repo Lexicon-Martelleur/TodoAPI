@@ -1,4 +1,5 @@
 ﻿using TodoAPI.Models.DTO;
+using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Models.Services
 {
@@ -6,7 +7,7 @@ namespace TodoAPI.Models.Services
     {
         Task<TodoDTO> AddTodo(TodoDTO todo);
         Task DeleteTodo(int id);
-        Task<(IEnumerable<TodoDTO>, PaginationMetaData)> GetTodoEntities(TodoQueryDTO query);
+        Task<(IEnumerable<TodoDTO>, PaginationVO)> GetTodoEntities(TodoQueryDTO query);
         Task<TodoDTO?> GetTodoEntity(int id);
         Task<TodoDTO?> UpdateTodo(int id, TodoDTO todoVO);
         Task<TodoDTO?> PatchTodo(int id, TodoDTO todoVO);

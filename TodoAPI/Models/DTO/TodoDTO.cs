@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TodoAPI.Models.Constants;
+using TodoAPI.Models.Validations;
 using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Models.DTO;
 
 public record class TodoDTO
 {
-    public int Id { get; init; }
+    public required int Id { get; init; }
 
     [Required]
-    [MaxLength(TodoRestriction.MAX_TIMESTAMP)]
-    public string Timestamp { get; init; } = String.Empty;
+    [TimestampValidation]
+    public required string Timestamp { get; init; }
 
     [Required]
-    public TodoVO Todo { get; init; } = new TodoVO(); 
+    public required TodoVO Todo { get; init; } 
 }

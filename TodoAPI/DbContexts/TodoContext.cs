@@ -16,23 +16,42 @@ public class TodoContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<TodoEntity>().HasData(
-            new TodoEntity("1724162544", "title1", "author1", "description1", false)
+            new TodoEntity
             {
-                Id = 1
+                Id = 1,
+                Title = "title1",
+                Author = "author1",
+                Description = "description1",
+                TimeStamp = "1724162544",
+                Done = false,
             },
-            new TodoEntity("1724162544", "title2", "author2", "description2", false)
+            new TodoEntity
             {
-                Id = 2
+                Id = 2,
+                Title = "title2",
+                Author = "author2",
+                Description = "description2",
+                TimeStamp = "1724162544",
+                Done = false,
             },
-            new TodoEntity("1724162544", "title3", "author3", "description3", false)
+            new TodoEntity
             {
-                Id = 3
+                Id = 3,
+                Title = "title3",
+                Author = "author3",
+                Description = "description3",
+                TimeStamp = "1724162544",
+                Done = false,
             },
-            new TodoEntity("1724162544", "title4", "author4", "description4", false)
+            new TodoEntity
             {
-                Id = 4
+                Id = 4,
+                Title = "title4",
+                Author = "author4",
+                Description = "description4",
+                TimeStamp = "1724162544",
+                Done = false,
             }
         );
     }
-
 }

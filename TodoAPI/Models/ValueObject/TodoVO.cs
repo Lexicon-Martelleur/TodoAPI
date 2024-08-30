@@ -7,17 +7,19 @@ public record class TodoVO()
 {
     [Required]
     [MaxLength(TodoRestriction.MAX_TITLE)]
-    public string Title { get; init; } = string.Empty;
-
+    [MinLength(TodoRestriction.MIN_TITLE)]
+    public required string Title { get; init; }
     
     [Required]
     [MaxLength(TodoRestriction.MAX_AUTHOR)]
-    public string Author { get; init; } = string.Empty;
+    [MinLength(TodoRestriction.MIN_AUTHOR)]
+    public required string Author { get; init; }
 
     [Required]
     [MaxLength(TodoRestriction.MAX_DESCRIPTION)]
-    public string Description { get; init; } = string.Empty;
+    [MinLength(TodoRestriction.MIN_DESCRIPTION)]
+    public required string Description { get; init; }
 
     [Required]
-    public bool Done { get; init; }
+    public required bool Done { get; init; }
 }

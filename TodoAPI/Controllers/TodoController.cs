@@ -38,7 +38,8 @@ public class TodoController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetTodo(int id)
+    public async Task<IActionResult> GetTodo(
+        [FromRoute] int id)
     {
         var todo = await _todoService.GetTodoEntity(id);
         
@@ -51,14 +52,17 @@ public class TodoController : ControllerBase
     }
 
     [HttpPost(Name = "CreateTodo")]
-    public async Task<ActionResult<TodoDTO>> CreateTodo(TodoDTO todo)
+    public async Task<ActionResult<TodoDTO>> CreateTodo(
+        [FromBody] TodoDTO todo)
     {
         var createdTodo = await _todoService.AddTodo(todo);
         return CreatedAtRoute("CreateTodo", createdTodo);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<TodoDTO>> UpdateTodo(int id, TodoDTO todo)
+    public async Task<ActionResult<TodoDTO>> UpdateTodo(
+        [FromRoute] int id,
+        [FromBody] TodoDTO todo)
     {
         var updatedTodo = await _todoService.UpdateTodo(id, todo);
         if (todo == null)
@@ -71,8 +75,8 @@ public class TodoController : ControllerBase
 
     [HttpPatch("{id}")]
     public async Task<ActionResult<TodoDTO>> PatchTodo(
-        int id,
-        JsonPatchDocument<TodoVO> todoPatchDocument
+        [FromRoute] int id,
+        [FromBody] JsonPatchDocument<TodoVO> todoPatchDocument
     )
     {
         var todoToPatch = await _todoService.GetTodoEntity(id);
@@ -94,7 +98,8 @@ public class TodoController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<TodoDTO>> DeleteTodo(int id)
+    public async Task<ActionResult<TodoDTO>> DeleteTodo(
+        [FromRoute] int id)
     {
         var todoEntity = await _todoService.GetTodoEntity(id);
         if (todoEntity == null)
@@ -105,5 +110,4 @@ public class TodoController : ControllerBase
         await _todoService.DeleteTodo(id);
         return Ok(new { id });
     }
-
 }

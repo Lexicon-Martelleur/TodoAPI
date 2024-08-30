@@ -2,7 +2,8 @@
 using TodoAPI.DBContext;
 using TodoAPI.Entities;
 using TodoAPI.Models.DTO;
-using TodoAPI.Models.Services;
+using TodoAPI.Models.Validations;
+using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Models.Repositories;
 
@@ -21,7 +22,7 @@ public class TodoRepository : ITodoRepository
     /// <param name="author"></param>
     /// <param name="searchQuery"></param>
     /// <returns></returns>
-    public async Task<(IEnumerable<TodoEntity>, PaginationMetaData)> GetTodoEntities(
+    public async Task<(IEnumerable<TodoEntity>, PaginationVO)> GetTodoEntities(
         TodoQueryDTO query
     )
     {
@@ -46,20 +47,21 @@ public class TodoRepository : ITodoRepository
                 item.Title.Contains(trimedSearchQuery));
         }
 
-        var tottalItemCount = await todoCollection.CountAsync();
+        var totalItemCount = await todoCollection.CountAsync();
 
-        var paginationMetatData = new PaginationMetaData(
-            tottalItemCount,
-            query.PageSize,
-            query.PageNr
-        );
+        var validatedPagination = ValidationService.ValidateInstance(new PaginationVO
+        {
+            TotalItemCount = totalItemCount,
+            PageSize = query.PageSize,
+            PageNr = query.PageNr
+        });
 
         var todos = await todoCollection
-            .Skip(query.PageSize * (query.PageNr - 1))
-            .Take(query.PageSize)
+            .Skip(validatedPagination.PageSize * (query.PageNr - 1))
+            .Take(validatedPagination.PageSize)
             .ToListAsync();
 
-        return (todos, paginationMetatData);
+        return (todos, validatedPagination);
     }
 
     public async Task<TodoEntity?> GetTodoEntity(int id)
