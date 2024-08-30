@@ -13,10 +13,6 @@ public class TimestampValidationAttribute : ValidationAttribute
             return false;
         }
 
-        var errorMessage = $"Pagination page size must be in interval [" +
-            $"{PaginationRestriction.MIN_PAGE_SIZE}," +
-            $"{PaginationRestriction.MAX_PAGE_SIZE}]";
-
         return IsUnixTimeStamp(input);
     }
 
