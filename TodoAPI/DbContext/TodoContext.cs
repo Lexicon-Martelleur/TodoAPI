@@ -18,7 +18,7 @@ public class TodoContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserAuthenticationEntity>()
-            .HasIndex(u => u.EMail)
+            .HasIndex(u => u.Email)
             .IsUnique();
     }
 }

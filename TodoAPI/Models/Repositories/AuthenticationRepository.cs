@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using TodoAPI.DBContext;
+using TodoAPI.Entities;
 
 namespace TodoAPI.Models.Repositories;
 
@@ -12,8 +14,10 @@ public class AuthenticationRepository : IAuthenticationRepository
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public Task<string?> AuthenticateByPassword()
+    public async Task<UserAuthenticationEntity?> GetUserByEmail(string email)
     {
-        throw new NotImplementedException();
+        return await _context.UserAuthentications
+            .Where(storedUser => storedUser.Email == email)
+            .FirstOrDefaultAsync();
     }
 }

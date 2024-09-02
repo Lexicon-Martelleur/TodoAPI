@@ -5,7 +5,7 @@
 namespace TodoAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserAuthentication : Migration
+    public partial class UpdateUserAuthentication : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace TodoAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EMail = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false)
                 },
@@ -55,9 +55,9 @@ namespace TodoAPI.Migrations
                 column: "UserAuthenticationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAuthentications_EMail",
+                name: "IX_UserAuthentications_Email",
                 table: "UserAuthentications",
-                column: "EMail",
+                column: "Email",
                 unique: true);
         }
 

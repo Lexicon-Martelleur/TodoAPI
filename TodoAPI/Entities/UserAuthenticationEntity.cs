@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿# nullable disable
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TodoAPI.Entities;
@@ -11,7 +13,7 @@ public class UserAuthenticationEntity
 
     [Required]
     [MaxLength(1000)]
-    public required string EMail{ get; set; }
+    public required string Email { get; set; }
 
     [Required]
     [MaxLength(1000)]
@@ -22,5 +24,5 @@ public class UserAuthenticationEntity
     public required string Password { get; set; }
 
     // Navigation Props
-    public required ICollection<TodoEntity> Todos { get; set; }
+    public ICollection<TodoEntity> Todos { get; set; }
 }

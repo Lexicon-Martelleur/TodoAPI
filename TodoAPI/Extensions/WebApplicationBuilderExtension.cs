@@ -97,6 +97,8 @@ internal static class WebApplicationBuilderExtension
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
+        builder.Services.AddScoped<ISecurityService, SecurityService>();
+
         builder.Services.AddScoped<
             IPasswordHasher<UserAuthenticationEntity>,
             PasswordHasher<UserAuthenticationEntity>>();

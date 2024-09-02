@@ -11,8 +11,8 @@ using TodoAPI.DBContext;
 namespace TodoAPI.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    [Migration("20240902204715_AddUserAuthentication")]
-    partial class AddUserAuthentication
+    [Migration("20240902230201_UpdateUserAuthentication")]
+    partial class UpdateUserAuthentication
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,7 @@ namespace TodoAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("EMail")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
@@ -90,7 +90,7 @@ namespace TodoAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EMail")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("UserAuthentications");

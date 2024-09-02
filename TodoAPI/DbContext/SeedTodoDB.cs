@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿# nullable disable
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TodoAPI.Entities;
 
@@ -52,7 +54,7 @@ public class SeedTodoDB
                 new TodoEntity
                 {
                     Title = "title2",
-                    Author = "author2",
+                    Author = user.UserName,
                     Description = "description2",
                     TimeStamp = "1724162544",
                     Done = false,
@@ -62,7 +64,7 @@ public class SeedTodoDB
                 new TodoEntity
                 {
                     Title = "title3",
-                    Author = "author3",
+                    Author = user.UserName,
                     Description = "description3",
                     TimeStamp = "1724162544",
                     Done = false,
@@ -72,7 +74,7 @@ public class SeedTodoDB
                 new TodoEntity
                 {
                     Title = "title4",
-                    Author = "author4",
+                    Author = user.UserName,
                     Description = "description4",
                     TimeStamp = "1724162544",
                     Done = false,
@@ -91,23 +93,26 @@ public class SeedTodoDB
         List<UserAuthenticationEntity> users = [
             new()
             {
+                // Id = Guid.NewGuid().ToString(),
                 UserName = "User1",
                 Password = "password",
-                EMail = "user1@mail.com",
+                Email = "user1@mail.com",
                 Todos = []
             },
             new()
             {
+                // Id = Guid.NewGuid().ToString(),
                 UserName = "User2",
                 Password = "password",
-                EMail = "user2@mail.com",
+                Email = "user2@mail.com",
                 Todos = []
             },
             new()
             {
+                // Id = Guid.NewGuid().ToString(),
                 UserName = "User3",
                 Password = "password",
-                EMail = "user3@mail.com",
+                Email = "user3@mail.com",
                 Todos = []
             }
         ];

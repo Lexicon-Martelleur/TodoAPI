@@ -1,7 +1,9 @@
 ﻿
+using TodoAPI.Entities;
+
 namespace TodoAPI.Models.Repositories;
 
 public interface IAuthenticationRepository
 {
-    Task<string?> AuthenticateByPassword();
+    public Task<UserAuthenticationEntity?> GetUserByEmail(string email);
 }
