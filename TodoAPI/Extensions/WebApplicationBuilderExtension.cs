@@ -1,7 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using TodoAPI.Config;
 using TodoAPI.Constants;
 using TodoAPI.DBContext;
+using TodoAPI.Entities;
 using TodoAPI.Models.Repositories;
 using TodoAPI.Models.Services;
 
@@ -86,8 +90,16 @@ internal static class WebApplicationBuilderExtension
     internal static void AddServicesExtension(this WebApplicationBuilder builder)
     {
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
         builder.Services.AddScoped<ITodoService, TodoService>();
         builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+        
+        builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+        builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
+
+        builder.Services.AddScoped<
+            IPasswordHasher<UserAuthenticationEntity>,
+            PasswordHasher<UserAuthenticationEntity>>();
     }
 
     internal static void AddCORSPolicyExtension(this WebApplicationBuilder builder)
@@ -110,5 +122,23 @@ internal static class WebApplicationBuilderExtension
                     .WithExposedHeaders(CustomHeader.Pagination);
             });
         });
+    }
+
+    internal static void AddAuthenticationExtension(this WebApplicationBuilder builder)
+    {
+        var secretByteArray = ApplicationConfig.GetTokenSecret(builder.Configuration);
+        builder.Services.AddAuthentication(ApplicationConfig.AuthenticationType)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = ApplicationConfig.GetTokenIssuer(builder.Configuration),
+                    ValidAudience = ApplicationConfig.GetTokenAudience(builder.Configuration),
+                    IssuerSigningKey = new SymmetricSecurityKey(secretByteArray)
+                };
+            });
     }
 }

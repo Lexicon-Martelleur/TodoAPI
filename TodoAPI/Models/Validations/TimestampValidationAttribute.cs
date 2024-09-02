@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TodoAPI.Models.Constants;
 
 namespace TodoAPI.Models.Validations;
 
@@ -22,8 +21,10 @@ public class TimestampValidationAttribute : ValidationAttribute
         {
             return false;
         }
+        long maxUnixTimestamp = new DateTimeOffset(2038, 1, 19, 3, 14, 0, TimeSpan.Zero).ToUnixTimeSeconds();
+        long maxUnixTimestampp = DateTimeOffset.MaxValue.ToUnixTimeSeconds();
+
         long minUnixTimestamp = 0;
-        long maxUnixTimestamp = DateTimeOffset.MaxValue.ToUnixTimeSeconds();
         return timestamp >= minUnixTimestamp &&
             timestamp <= maxUnixTimestamp;
     }

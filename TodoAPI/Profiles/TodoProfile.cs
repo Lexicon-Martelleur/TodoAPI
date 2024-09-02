@@ -23,5 +23,9 @@ public class TodoProfile : Profile
             .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Todo.Author))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Todo.Description))
             .ForMember(dest => dest.Done, opt => opt.MapFrom(src => src.Todo.Done));
+
+        CreateMap<UserAuthenticationDTO, UserAuthenticationEntity>();
+
+        CreateMap<UserAuthenticationEntity, UserAuthenticationDTO>();
     }
 }

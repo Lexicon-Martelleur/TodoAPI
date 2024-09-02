@@ -7,7 +7,7 @@ public class TodoEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(1000)]
@@ -27,4 +27,10 @@ public class TodoEntity
 
     [Required]
     public required bool Done { get; set; }
+
+    [ForeignKey(nameof(UserAuthenticationEntity))]
+    public required int UserAuthenticationId { get; set; }
+
+    // Navigation Props
+    public required UserAuthenticationEntity UserAuthentication { get; set; }
 }

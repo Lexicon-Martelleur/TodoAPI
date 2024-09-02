@@ -1,40 +1,47 @@
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using TodoAPI.Constants;
-using TodoAPI.DBContext;
 using TodoAPI.Extensions;
-using TodoAPI.Models.Repositories;
-using TodoAPI.Models.Services;
 
 namespace TodoAPI;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var app = CreateWebApplication(args);
-        ConfigureWebApplicationPipeline(app);
+        await ConfigureWebApplicationPipeline(app);
     }
 
     private static WebApplication CreateWebApplication(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
         builder.AddCustomLoggingExtension();
+        
         builder.AddGlobalErrorHandlingExtension();
+        
         builder.AddAndConfigureControllersExtension();
+        
         builder.AddSwaggerServiceExtension();
+        
         builder.AddDBContextExtension();
+        
         builder.AddServicesExtension();
+        
         builder.AddCORSPolicyExtension();
+        
+        builder.AddAuthenticationExtension();
+        
         return builder.Build();
     }
 
-    private static void ConfigureWebApplicationPipeline(WebApplication app)
+    private static async Task ConfigureWebApplicationPipeline(WebApplication app)
     {
         app.TestDBConnectionExtension();
+        
         app.UseCORSPolicyExtension();
+        
         if (app.Environment.IsDevelopment())
         {
+            await app.UseDataSeedAsyncExtension();
             app.UseSwagger();
             app.UseSwaggerUI();
         }
@@ -43,8 +50,13 @@ public class Program
             app.UseHttpsRedirection();
             app.UseExceptionHandler();
         }
+
+        app.UseAuthentication();
+        
         app.UseAuthorization();
+        
         app.MapControllers();
+        
         app.Run();
     }
 }

@@ -11,8 +11,8 @@ using TodoAPI.DBContext;
 namespace TodoAPI.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    [Migration("20240821060733_InitialMigrationTodoDB")]
-    partial class InitialMigrationTodoDB
+    [Migration("20240902204715_AddUserAuthentication")]
+    partial class AddUserAuthentication
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,47 +55,61 @@ namespace TodoAPI.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<int>("UserAuthenticationId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Todos");
+                    b.HasIndex("UserAuthenticationId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Author = "author1",
-                            Description = "description1",
-                            Done = false,
-                            TimeStamp = "1724162544",
-                            Title = "title1"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Author = "author2",
-                            Description = "description2",
-                            Done = false,
-                            TimeStamp = "1724162544",
-                            Title = "title2"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Author = "author3",
-                            Description = "description3",
-                            Done = false,
-                            TimeStamp = "1724162544",
-                            Title = "title3"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Author = "author4",
-                            Description = "description4",
-                            Done = false,
-                            TimeStamp = "1724162544",
-                            Title = "title4"
-                        });
+                    b.ToTable("Todos");
+                });
+
+            modelBuilder.Entity("TodoAPI.Entities.UserAuthenticationEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EMail")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EMail")
+                        .IsUnique();
+
+                    b.ToTable("UserAuthentications");
+                });
+
+            modelBuilder.Entity("TodoAPI.Entities.TodoEntity", b =>
+                {
+                    b.HasOne("TodoAPI.Entities.UserAuthenticationEntity", "UserAuthentication")
+                        .WithMany("Todos")
+                        .HasForeignKey("UserAuthenticationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserAuthentication");
+                });
+
+            modelBuilder.Entity("TodoAPI.Entities.UserAuthenticationEntity", b =>
+                {
+                    b.Navigation("Todos");
                 });
 #pragma warning restore 612, 618
         }

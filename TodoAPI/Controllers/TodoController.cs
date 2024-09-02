@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -10,6 +11,7 @@ namespace TodoAPI.Controllers;
 
 [Route(Router.TODOS)]
 [ApiController]
+[Authorize]
 public class TodoController : ControllerBase
 {
     private readonly ILogger<TodoController> _logger;
@@ -29,6 +31,7 @@ public class TodoController : ControllerBase
         [FromQuery] TodoQueryDTO query
     )
     {
+        var Email = User.Claims.FirstOrDefault(claim => claim.Type == "email")?.Value;
         var (todos, paginationMetaData) = await _todoService.GetTodoEntities(query);
         Response.Headers.Append(
             CustomHeader.Pagination,
