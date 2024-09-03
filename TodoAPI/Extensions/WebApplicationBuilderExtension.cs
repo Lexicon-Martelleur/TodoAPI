@@ -4,9 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using TodoAPI.Config;
 using TodoAPI.Constants;
-using TodoAPI.DBContext;
+using TodoAPI.DbContext.Contexts;
+using TodoAPI.DbContext.Repositories;
 using TodoAPI.Entities;
 using TodoAPI.Lib;
+using TodoAPI.Models.Profiles;
 using TodoAPI.Models.Repositories;
 using TodoAPI.Models.Services;
 using TodoAPI.Services;
@@ -91,7 +93,10 @@ internal static class WebApplicationBuilderExtension
 
     internal static void AddServicesExtension(this WebApplicationBuilder builder)
     {
-        builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        builder.Services.AddAutoMapper(configuration =>
+        {
+            configuration.AddProfile<TodoProfile>();
+        });
 
         builder.Services.AddScoped<ITodoService, TodoService>();
         builder.Services.AddScoped<ITodoRepository, TodoRepository>();

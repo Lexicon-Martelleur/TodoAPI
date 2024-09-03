@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.Entities;
 
-namespace TodoAPI.DBContext;
+namespace TodoAPI.DbContext.Contexts;
 
-public class TodoContext : DbContext
+public class TodoContext : Microsoft.EntityFrameworkCore.DbContext
 {
     public DbSet<TodoEntity> Todos { get; set; }
 

@@ -60,6 +60,12 @@ public class TodoController : ControllerBase
     public async Task<ActionResult<TodoDTO>> CreateTodo(
         [FromBody] TodoDTO todo)
     {
+        var validatedUserId = _claimService.GetValidUserIdFromClaims(User, todo);
+        if (validatedUserId == null)
+        {
+            return Unauthorized();
+        }
+
         var createdTodo = await _todoService.AddTodo(todo);
         return CreatedAtRoute("CreateTodo", createdTodo);
     }

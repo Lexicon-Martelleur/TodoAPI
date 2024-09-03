@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.Constants;
-using TodoAPI.DBContext;
+using TodoAPI.DbContext.Contexts;
+using TodoAPI.DbContext.Seeds;
 using TodoAPI.Lib;
 
 namespace TodoAPI.Extensions;

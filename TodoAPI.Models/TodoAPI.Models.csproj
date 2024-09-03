@@ -11,7 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TodoAPI.DbContext\TodoAPI.DbContext.csproj" />
+    <ProjectReference Include="..\TodoAPI.Entities\TodoAPI.Entities.csproj" />
+    <ProjectReference Include="..\TodoAPI.Lib\TodoAPI.Lib.csproj" />
   </ItemGroup>
 
 </Project>

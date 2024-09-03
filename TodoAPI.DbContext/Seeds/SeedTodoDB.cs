@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TodoAPI.DbContext.Contexts;
 using TodoAPI.Entities;
 using TodoAPI.Lib;
 
-namespace TodoAPI.DBContext;
+namespace TodoAPI.DbContext.Seeds;
 
 public class SeedTodoDB
 {
@@ -31,7 +32,7 @@ public class SeedTodoDB
         return await context.UserAuthentications.AnyAsync();
     }
 
-    private static IEnumerable<TodoEntity> CreateTodoEntitites (
+    private static IEnumerable<TodoEntity> CreateTodoEntitites(
         IEnumerable<UserAuthenticationEntity> users)
     {
         List<TodoEntity> todos = [];
