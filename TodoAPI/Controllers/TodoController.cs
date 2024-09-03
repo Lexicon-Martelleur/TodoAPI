@@ -7,6 +7,7 @@ using System.Text.Json;
 using TodoAPI.Constants;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Services;
+using TodoAPI.Models.Validations;
 using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Controllers;
@@ -71,12 +72,21 @@ public class TodoController : ControllerBase
         [FromRoute] int id,
         [FromBody] TodoDTO todo)
     {
-        var updatedTodo = await _todoService.UpdateTodo(id, todo);
+        var validatedUserId = _claimService.GetValidUserIdFromClaims(User, todo);
+        if (validatedUserId == null)
+        {
+            return Unauthorized();
+        }
+
+        var updatedTodo = await _todoService.UpdateTodo(
+            id, validatedUserId.Value, todo);
+        
         if (todo == null)
         {
             _logger.LogInformation($"Could not find todo with id={id}");
             return NotFound();
         }
+        
         return Ok(updatedTodo);
     }
 
@@ -86,8 +96,8 @@ public class TodoController : ControllerBase
         [FromBody] JsonPatchDocument<TodoVO> todoPatchDocument
     )
     {
-        var claimedUserId = _claimService.GetUserIdFromClaims(User);
-        if (claimedUserId == null)
+        var validatedUserId = _claimService.GetValidUserIdFromClaims(User);
+        if (validatedUserId == null)
         {
             return Unauthorized();
         }
@@ -101,7 +111,7 @@ public class TodoController : ControllerBase
 
         var todoToPatchWith = await _todoService.GetTodoEntityToPatchWith(
             id,
-            claimedUserId.Value,
+            validatedUserId.Value,
             patchFunction);
 
         if (todoToPatchWith == null)
@@ -110,7 +120,7 @@ public class TodoController : ControllerBase
             return NotFound();
         }
 
-        var isPacthed = await _todoService.PatchTodo(id, claimedUserId.Value, todoToPatchWith);
+        var isPacthed = await _todoService.PatchTodo(id, validatedUserId.Value, todoToPatchWith);
         if (!isPacthed)
         { 
             return NotFound();
@@ -124,20 +134,20 @@ public class TodoController : ControllerBase
     public async Task<ActionResult<TodoDTO>> DeleteTodo(
         [FromRoute] int id)
     {
-        var claimedUserId = _claimService.GetUserIdFromClaims(User);
-        if (claimedUserId == null)
+        var validatedUserId = _claimService.GetValidUserIdFromClaims(User);
+        if (validatedUserId == null)
         {
             return Unauthorized();
         }
 
         var todo = await _todoService.GetTodoEntityWithClaimedId(
             id,
-            claimedUserId.Value);
+            validatedUserId.Value);
         
         if (todo == null)
         {
             _logger.LogInformation($"Could not find todo with id={id}");
-            return NotFound();
+            return Unauthorized();
         }
 
         await _todoService.DeleteTodo(id);

@@ -72,7 +72,7 @@ public class TodoRepository : ITodoRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<TodoEntity?> GetTodoEntityWithClaimedId(
+    public async Task<TodoEntity?> GetTodoEntityWithClaimedUserId(
         int id,
         int claimedUserId)
     {

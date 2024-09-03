@@ -17,7 +17,7 @@ public interface ITodoRepository
 
     Task<bool> SaveChanges();
     
-    Task<TodoEntity?> GetTodoEntityWithClaimedId(
+    Task<TodoEntity?> GetTodoEntityWithClaimedUserId(
     int id,
     int claimedUserId);
 }

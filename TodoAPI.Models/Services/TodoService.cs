@@ -49,10 +49,13 @@ public class TodoService : ITodoService
 
     public async Task<TodoDTO?> UpdateTodo(
         int id,
-        TodoDTO todoDTO
-    )
+        int claimedUserId,
+        TodoDTO todoDTO)
     {
-        var todoEntity = await _repository.GetTodoEntity(id);
+        var todoEntity = await _repository.GetTodoEntityWithClaimedUserId(
+            id,
+            claimedUserId);
+
         if (todoEntity == null)
         {
             return null;
@@ -68,11 +71,11 @@ public class TodoService : ITodoService
         TodoDTO todoDTO
     )
     {
-        var todoEntity = await _repository.GetTodoEntityWithClaimedId(
+        var todoEntity = await _repository.GetTodoEntityWithClaimedUserId(
             id,
             claimedUserId);
 
-        if (todoEntity == null)
+        if (todoEntity == default)
         {
             return false;
         }
@@ -90,7 +93,7 @@ public class TodoService : ITodoService
         int id,
         int claimedUserId)
     {
-        var todo = await _repository.GetTodoEntityWithClaimedId(
+        var todo = await _repository.GetTodoEntityWithClaimedUserId(
             id,
             claimedUserId);
 

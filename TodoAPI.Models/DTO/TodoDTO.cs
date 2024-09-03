@@ -8,6 +8,7 @@ public record class TodoDTO
 {
     public int Id { get; init; }
 
+    [Required]
     public required int UserId { get; init; }
 
     [Required]
