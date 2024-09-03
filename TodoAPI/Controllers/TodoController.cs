@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text.Json;
-using TodoAPI.Config;
 using TodoAPI.Constants;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Services;
@@ -49,7 +48,7 @@ public class TodoController : ControllerBase
         
         if (todo == null)
         {
-            _logger.LogInformation($"No todo of id={id} find");
+            _logger.LogInformation($"Could not find todo with id={id}");
             return NotFound();
         }
         return Ok(todo);
@@ -71,7 +70,7 @@ public class TodoController : ControllerBase
         var updatedTodo = await _todoService.UpdateTodo(id, todo);
         if (todo == null)
         {
-            _logger.LogInformation($"No todo of id={id} find");
+            _logger.LogInformation($"Could not find todo with id={id}");
             return NotFound();
         }
         return Ok(updatedTodo);
@@ -93,30 +92,36 @@ public class TodoController : ControllerBase
         if (claimedSubject == null ||
             !int.TryParse(claimedSubject, out int claimedUserId))
         {
+            _logger.LogInformation($"Could not find todo with id={id}");
             return NotFound();
         }
 
-        var todoToPatch = await _todoService.GetTodoEntity(id);
-        if (todoToPatch == null)
+        bool patchFunction(TodoVO todo)
         {
-            _logger.LogInformation($"No todo of id={id} find");
+            todoPatchDocument.ApplyTo(todo, ModelState);
+            return ModelState.IsValid && TryValidateModel(todo);
+        }
+
+        var todoToPatchWith = await _todoService.GetTodoEntityWithClaimedId(
+            id,
+            claimedUserId,
+            patchFunction);
+
+        if (todoToPatchWith == null)
+        {
+            _logger.LogInformation($"Could not find todo with id={id}");
             return NotFound();
         }
 
-        todoPatchDocument.ApplyTo(todoToPatch.Todo, ModelState);
-        if (!ModelState.IsValid || !TryValidateModel(todoToPatch))
-        {
-            return BadRequest(ModelState);
-        }
-
-        var todo = await _todoService.PatchTodo(id, claimedUserId, todoToPatch);
-        if (todo == null)
+        var isPacthed = await _todoService.PatchTodo(id, claimedUserId, todoToPatchWith);
+        if (!isPacthed)
         { 
             return NotFound();
         }
         
-        return Ok(todo);
+        return Ok(todoToPatchWith);
     }
+
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<TodoDTO>> DeleteTodo(
@@ -125,7 +130,7 @@ public class TodoController : ControllerBase
         var todoEntity = await _todoService.GetTodoEntity(id);
         if (todoEntity == null)
         {
-            _logger.LogInformation($"No todo of id={id} find");
+            _logger.LogInformation($"Could not find todo with id={id}");
             return NotFound();
         }
         await _todoService.DeleteTodo(id);

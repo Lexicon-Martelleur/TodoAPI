@@ -62,7 +62,7 @@ public class TodoService : ITodoService
         return _mapper.Map<TodoDTO>(updatedTodoEntity);
     }
 
-    public async Task<TodoDTO?> PatchTodo(
+    public async Task<bool> PatchTodo(
         int id,
         int claimedUserId,
         TodoDTO todoDTO
@@ -74,16 +74,35 @@ public class TodoService : ITodoService
 
         if (todoEntity == null)
         {
-            return null;
+            return false;
         }
         var updatedTodoEntity = _mapper.Map(todoDTO, todoEntity);
-        await _repository.SaveChanges();
-        return _mapper.Map<TodoDTO>(updatedTodoEntity);
+        return await _repository.SaveChanges();
     }
 
     public async Task DeleteTodo(int id)
     {
         await _repository.DeleteTodo(id);
         await _repository.SaveChanges();
+    }
+
+    public async Task<TodoDTO?> GetTodoEntityWithClaimedId(
+        int id,
+        int claimedUserId,
+        Func<TodoVO, bool> applyPatchFunction)
+    {
+        var todo = await _repository.GetTodoEntityWithClaimedId(
+            id,
+            claimedUserId);
+        var todoDTO = _mapper.Map<TodoDTO>(todo);
+
+        var isValidPatch = applyPatchFunction(todoDTO.Todo);
+        
+        if (!isValidPatch)
+        {
+            return null;
+        }
+        
+        return _mapper.Map<TodoDTO>(todo);
     }
 }
