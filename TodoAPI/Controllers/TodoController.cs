@@ -11,7 +11,7 @@ namespace TodoAPI.Controllers;
 
 [Route(Router.TODOS)]
 [ApiController]
-[Authorize]
+[Authorize(Policy = Authorization.UserPolicy)]
 public class TodoController : ControllerBase
 {
     private readonly ILogger<TodoController> _logger;

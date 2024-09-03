@@ -29,6 +29,8 @@ public class Program
         builder.AddCORSPolicyExtension();
         
         builder.AddAuthenticationExtension();
+
+        builder.AddAuthorizationExtension();
         
         return builder.Build();
     }
@@ -53,8 +55,8 @@ public class Program
 
         app.UseAuthentication();
         
-        app.UseAuthorization();
-        
+        app.UseAuthorization();     
+
         app.MapControllers();
         
         app.Run();

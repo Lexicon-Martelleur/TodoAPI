@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using TodoAPI.Config;
+using TodoAPI.Constants;
 using TodoAPI.Entities;
 using TodoAPI.Lib;
 
@@ -50,7 +51,8 @@ public class SecurityService : ISecurityService
 
         List<Claim> claims = [
             new(SecurityConfig.ClaimSubject, userAuthentication.Id.ToString()),
-            new(SecurityConfig.ClaimEmail, userAuthentication.Email)
+            new(SecurityConfig.ClaimEmail, userAuthentication.Email),
+            new(SecurityConfig.ClaimRole, Authorization.UserRole)
         ];
 
         var token = new JwtSecurityToken(

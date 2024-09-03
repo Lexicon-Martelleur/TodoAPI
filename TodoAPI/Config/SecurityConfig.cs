@@ -6,6 +6,8 @@ internal static class SecurityConfig
 
     internal const string ClaimEmail = "email";
 
+    internal const string ClaimRole = "role";
+
     internal const string AuthenticationType = "Bearer";
 
     internal static byte[] GetTokenSecret(IConfiguration configuration)

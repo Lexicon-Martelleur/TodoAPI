@@ -145,4 +145,12 @@ internal static class WebApplicationBuilderExtension
                 };
             });
     }
+
+    internal static void AddAuthorizationExtension(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy(Authorization.UserPolicy, policy => policy.RequireRole(Authorization.UserRole));
+        });
+    }
 }
