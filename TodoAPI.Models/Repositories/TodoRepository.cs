@@ -101,6 +101,6 @@ public class TodoRepository : ITodoRepository
 
     public async Task<bool> SaveChanges()
     {
-        return await _context.SaveChangesAsync() >= 1;
+        return await _context.SaveChangesAsync() >= 0;
     }
 }

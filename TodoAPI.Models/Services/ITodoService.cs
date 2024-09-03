@@ -14,6 +14,6 @@ namespace TodoAPI.Models.Services
         Task<TodoDTO?> GetTodoEntityWithClaimedId(
             int id,
             int claimedUserId,
-            Func<TodoVO, bool> applyPatchFunction);
+            Func<TodoDTO, bool> applyPatchFunction);
     }
 }

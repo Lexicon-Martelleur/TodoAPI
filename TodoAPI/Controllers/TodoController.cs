@@ -96,9 +96,9 @@ public class TodoController : ControllerBase
             return NotFound();
         }
 
-        bool patchFunction(TodoVO todo)
+        bool patchFunction(TodoDTO todo)
         {
-            todoPatchDocument.ApplyTo(todo, ModelState);
+            todoPatchDocument.ApplyTo(todo.Todo, ModelState);
             return ModelState.IsValid && TryValidateModel(todo);
         }
 
