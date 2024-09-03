@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Text.Json;
+using TodoAPI.Config;
 using TodoAPI.Constants;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Services;
@@ -31,7 +33,6 @@ public class TodoController : ControllerBase
         [FromQuery] TodoQueryDTO query
     )
     {
-        var Email = User.Claims.FirstOrDefault(claim => claim.Type == "email")?.Value;
         var (todos, paginationMetaData) = await _todoService.GetTodoEntities(query);
         Response.Headers.Append(
             CustomHeader.Pagination,
@@ -82,6 +83,19 @@ public class TodoController : ControllerBase
         [FromBody] JsonPatchDocument<TodoVO> todoPatchDocument
     )
     {
+        var claimedSubject = User.Claims
+            .Where(claim => {
+                var type = claim.Type;
+                return claim.Type == ClaimTypes.NameIdentifier;
+            })
+            .FirstOrDefault()?.Value;
+
+        if (claimedSubject == null ||
+            !int.TryParse(claimedSubject, out int claimedUserId))
+        {
+            return NotFound();
+        }
+
         var todoToPatch = await _todoService.GetTodoEntity(id);
         if (todoToPatch == null)
         {
@@ -95,8 +109,12 @@ public class TodoController : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var todo = await _todoService.PatchTodo(id, todoToPatch);
-        if (todo == null) { return NotFound(); }
+        var todo = await _todoService.PatchTodo(id, claimedUserId, todoToPatch);
+        if (todo == null)
+        { 
+            return NotFound();
+        }
+        
         return Ok(todo);
     }
 

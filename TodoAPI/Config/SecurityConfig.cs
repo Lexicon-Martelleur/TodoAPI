@@ -8,6 +8,8 @@ internal static class SecurityConfig
 
     internal const string ClaimRole = "role";
 
+    internal const int TokenValidTimeDuration = 24;
+
     internal const string AuthenticationType = "Bearer";
 
     internal static byte[] GetTokenSecret(IConfiguration configuration)

@@ -20,5 +20,9 @@ public class TodoContext : DbContext
         modelBuilder.Entity<UserAuthenticationEntity>()
             .HasIndex(u => u.Email)
             .IsUnique();
+
+        modelBuilder.Entity<UserAuthenticationEntity>()
+            .HasIndex(u => u.UserName)
+            .IsUnique();
     }
 }

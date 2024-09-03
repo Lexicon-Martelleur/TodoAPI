@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using TodoAPI.DBContext;
 using TodoAPI.Entities;
 using TodoAPI.Models.DTO;
@@ -68,6 +69,15 @@ public class TodoRepository : ITodoRepository
     {
         return await _context.Todos
             .Where(item => item.Id == id)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<TodoEntity?> GetTodoEntityWithClaimedId(
+        int id,
+        int claimedUserId)
+    {
+        return await _context.Todos
+            .Where(item => item.Id == id && item.UserAuthenticationId == claimedUserId)
             .FirstOrDefaultAsync();
     }
 

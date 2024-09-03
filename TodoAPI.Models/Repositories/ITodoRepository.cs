@@ -1,4 +1,5 @@
-﻿using TodoAPI.Entities;
+﻿using AutoMapper;
+using TodoAPI.Entities;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.ValueObject;
 
@@ -15,4 +16,8 @@ public interface ITodoRepository
     Task DeleteTodo(int id);
 
     Task<bool> SaveChanges();
+    
+    Task<TodoEntity?> GetTodoEntityWithClaimedId(
+    int id,
+    int claimedUserId);
 }

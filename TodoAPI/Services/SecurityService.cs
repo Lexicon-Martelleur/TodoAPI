@@ -60,7 +60,7 @@ public class SecurityService : ISecurityService
             SecurityConfig.GetTokenAudience(_configuration),
             claims,
             DateTime.UtcNow,
-            DateTime.UtcNow.AddHours(1),
+            DateTime.UtcNow.AddHours(SecurityConfig.TokenValidTimeDuration),
             signingCredentials
         );
 

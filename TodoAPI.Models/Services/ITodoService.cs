@@ -10,6 +10,6 @@ namespace TodoAPI.Models.Services
         Task<(IEnumerable<TodoDTO>, PaginationVO)> GetTodoEntities(TodoQueryDTO query);
         Task<TodoDTO?> GetTodoEntity(int id);
         Task<TodoDTO?> UpdateTodo(int id, TodoDTO todoVO);
-        Task<TodoDTO?> PatchTodo(int id, TodoDTO todoVO);
+        Task<TodoDTO?> PatchTodo(int id, int claimedUserId, TodoDTO todoVO);
     }
 }

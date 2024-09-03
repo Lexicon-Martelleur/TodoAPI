@@ -38,7 +38,7 @@ public class AuthenticationService : IAuthenticationService
 
         if (!isValidPassword) { return null; }
         
-        var token = _securityService.GenerateToken(userAuthentication);
+        var token = _securityService.GenerateToken(storedUser);
         if (token == null) { return null; }
         
         return new TokenDTO() { Token = token };

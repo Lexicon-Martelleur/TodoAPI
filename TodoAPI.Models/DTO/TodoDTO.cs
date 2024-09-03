@@ -6,12 +6,15 @@ namespace TodoAPI.Models.DTO;
 
 public record class TodoDTO
 {
-    public required int Id { get; init; }
+    public int Id { get; init; }
+
+    public required int UserId { get; init; }
 
     [Required]
     [TimestampValidation]
     public required string Timestamp { get; init; }
 
     [Required]
-    public required TodoVO Todo { get; init; } 
+    public required TodoVO Todo { get; init; }
+
 }

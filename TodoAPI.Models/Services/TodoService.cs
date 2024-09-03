@@ -64,10 +64,14 @@ public class TodoService : ITodoService
 
     public async Task<TodoDTO?> PatchTodo(
         int id,
+        int claimedUserId,
         TodoDTO todoDTO
     )
     {
-        var todoEntity = await _repository.GetTodoEntity(id);
+        var todoEntity = await _repository.GetTodoEntityWithClaimedId(
+            id,
+            claimedUserId);
+
         if (todoEntity == null)
         {
             return null;
