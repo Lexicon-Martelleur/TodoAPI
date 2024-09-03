@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using TodoAPI.Entities;
+﻿using TodoAPI.Entities;
 
 namespace TodoAPI.Models.Services
 {

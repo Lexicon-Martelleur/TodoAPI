@@ -4,8 +4,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using TodoAPI.Config;
 using TodoAPI.Entities;
+using TodoAPI.Models.Services;
 
-namespace TodoAPI.Models.Services;
+namespace TodoAPI.Services;
 
 public class SecurityService : ISecurityService
 {

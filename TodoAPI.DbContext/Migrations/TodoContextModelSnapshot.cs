@@ -59,7 +59,7 @@ namespace TodoAPI.Migrations
 
                     b.HasIndex("UserAuthenticationId");
 
-                    b.ToTable("Todos");
+                    b.ToTable("Todos", (string)null);
                 });
 
             modelBuilder.Entity("TodoAPI.Entities.UserAuthenticationEntity", b =>
@@ -90,7 +90,7 @@ namespace TodoAPI.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("UserAuthentications");
+                    b.ToTable("UserAuthentications", (string)null);
                 });
 
             modelBuilder.Entity("TodoAPI.Entities.TodoEntity", b =>

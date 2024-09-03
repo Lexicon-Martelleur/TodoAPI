@@ -1,8 +1,6 @@
-﻿# nullable disable
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.Entities;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.DBContext;
 
@@ -10,7 +8,7 @@ public class SeedTodoDB
 {
     public static async Task RunAsync(
         TodoContext context,
-        IPasswordHasher<UserAuthenticationEntity> passwordHasher)
+        ISecurityService securityService)
     {
         if (await IsExistingMovieData(context))
         {
@@ -18,7 +16,7 @@ public class SeedTodoDB
         }
 
         Console.WriteLine("Seeding Data...");
-        var users = CreateUsers(passwordHasher);
+        var users = CreateUsers(securityService);
         await context.AddRangeAsync(users);
 
         var todos = CreateTodoEntitites(users);
@@ -88,7 +86,7 @@ public class SeedTodoDB
     }
 
     private static IEnumerable<UserAuthenticationEntity> CreateUsers(
-        IPasswordHasher<UserAuthenticationEntity> passwordHasher)
+        ISecurityService securityService)
     {
         List<UserAuthenticationEntity> users = [
             new()
@@ -119,7 +117,7 @@ public class SeedTodoDB
 
         foreach (var user in users)
         {
-            var hashedPwd = passwordHasher.HashPassword(user, user.Password);
+            var hashedPwd = securityService.HashPassword(user, user.Password);
             user.Password = hashedPwd;
         }
 

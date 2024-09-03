@@ -10,8 +10,8 @@ main () {
 remove_latest_migration () {
 	echo "Removing latest migration..."
 	dotnet.exe ef migrations remove \
-		--project TodoAPI/ \
-		--startup-project TodoAPI/ \
+		--project TodoAPI.DbContext \
+		--startup-project TodoAPI \
 	    --configuration Development \
 		--context TodoContext
 }

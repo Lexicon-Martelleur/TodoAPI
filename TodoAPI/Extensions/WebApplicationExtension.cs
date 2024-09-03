@@ -1,21 +1,22 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.Constants;
 using TodoAPI.DBContext;
-using TodoAPI.Entities;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.Extensions;
 
 internal static class WebApplicationExtension
 {
-    public static async Task UseDataSeedAsyncExtension(this IApplicationBuilder applicationBuilder)
+    internal static async Task UseDataSeedAsyncExtension(this IApplicationBuilder applicationBuilder)
     {
         using var scope = applicationBuilder.ApplicationServices.CreateScope();
         var serviceProvider = scope.ServiceProvider;
         var context = serviceProvider.GetRequiredService<TodoContext>();
-        var passwordHasher = serviceProvider.GetRequiredService<IPasswordHasher<UserAuthenticationEntity>>();
+        var securitySerivce = serviceProvider.GetRequiredService<ISecurityService>();
+
+
         await context.Database.MigrateAsync();
-        await SeedTodoDB.RunAsync(context, passwordHasher);
+        await SeedTodoDB.RunAsync(context, securitySerivce);
     }
 
     internal static void TestDBConnectionExtension(this WebApplication application)

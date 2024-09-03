@@ -8,6 +8,7 @@ using TodoAPI.DBContext;
 using TodoAPI.Entities;
 using TodoAPI.Models.Repositories;
 using TodoAPI.Models.Services;
+using TodoAPI.Services;
 
 namespace TodoAPI.Extensions;
 
