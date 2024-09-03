@@ -1,13 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using System.Security.Claims;
 using System.Text.Json;
 using TodoAPI.Constants;
 using TodoAPI.Models.DTO;
 using TodoAPI.Models.Services;
-using TodoAPI.Models.Validations;
 using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Controllers;
