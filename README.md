@@ -1,5 +1,7 @@
 # TodoAPI
 
+**TODO:** Update frontend by adding authentication 
+
 REST API used by frontend https://github.com/Lexicon-Martelleur/Exercise-React-Todo-List
 
 # Notes
