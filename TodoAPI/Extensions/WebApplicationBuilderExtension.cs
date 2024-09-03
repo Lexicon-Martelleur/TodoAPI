@@ -6,6 +6,7 @@ using TodoAPI.Config;
 using TodoAPI.Constants;
 using TodoAPI.DBContext;
 using TodoAPI.Entities;
+using TodoAPI.Lib;
 using TodoAPI.Models.Repositories;
 using TodoAPI.Models.Services;
 using TodoAPI.Services;
@@ -129,8 +130,8 @@ internal static class WebApplicationBuilderExtension
 
     internal static void AddAuthenticationExtension(this WebApplicationBuilder builder)
     {
-        var secretByteArray = ApplicationConfig.GetTokenSecret(builder.Configuration);
-        builder.Services.AddAuthentication(ApplicationConfig.AuthenticationType)
+        var secretByteArray = SecurityConfig.GetTokenSecret(builder.Configuration);
+        builder.Services.AddAuthentication(SecurityConfig.AuthenticationType)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new()
@@ -138,8 +139,8 @@ internal static class WebApplicationBuilderExtension
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = ApplicationConfig.GetTokenIssuer(builder.Configuration),
-                    ValidAudience = ApplicationConfig.GetTokenAudience(builder.Configuration),
+                    ValidIssuer = SecurityConfig.GetTokenIssuer(builder.Configuration),
+                    ValidAudience = SecurityConfig.GetTokenAudience(builder.Configuration),
                     IssuerSigningKey = new SymmetricSecurityKey(secretByteArray)
                 };
             });

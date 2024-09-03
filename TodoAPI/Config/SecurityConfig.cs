@@ -1,6 +1,6 @@
 ﻿namespace TodoAPI.Config;
 
-internal static class ApplicationConfig
+internal static class SecurityConfig
 {
     internal const string ClaimSubject = "sub";
 

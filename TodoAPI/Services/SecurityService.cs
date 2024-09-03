@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using TodoAPI.Config;
 using TodoAPI.Entities;
-using TodoAPI.Models.Services;
+using TodoAPI.Lib;
 
 namespace TodoAPI.Services;
 
@@ -42,20 +42,20 @@ public class SecurityService : ISecurityService
 
     public string? GenerateToken(UserAuthenticationEntity userAuthentication)
     {
-        var securityKey = new SymmetricSecurityKey(ApplicationConfig.GetTokenSecret(_configuration));
+        var securityKey = new SymmetricSecurityKey(SecurityConfig.GetTokenSecret(_configuration));
 
         var signingCredentials = new SigningCredentials(
             securityKey,
             SecurityAlgorithms.HmacSha256);
 
         List<Claim> claims = [
-            new(ApplicationConfig.ClaimSubject, userAuthentication.Id.ToString()),
-            new(ApplicationConfig.ClaimEmail, userAuthentication.Email)
+            new(SecurityConfig.ClaimSubject, userAuthentication.Id.ToString()),
+            new(SecurityConfig.ClaimEmail, userAuthentication.Email)
         ];
 
         var token = new JwtSecurityToken(
-            ApplicationConfig.GetTokenIssuer(_configuration),
-            ApplicationConfig.GetTokenAudience(_configuration),
+            SecurityConfig.GetTokenIssuer(_configuration),
+            SecurityConfig.GetTokenAudience(_configuration),
             claims,
             DateTime.UtcNow,
             DateTime.UtcNow.AddHours(1),
