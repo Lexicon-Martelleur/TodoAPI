@@ -3,6 +3,7 @@ using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using TodoAPI.Config;
@@ -173,8 +174,9 @@ internal static class WebApplicationBuilderExtension
     }
 
     /// <summary>
-    /// Should be called after <see cref="AddApiVersioningExtension"/>
+    /// Used to document the api using OpenAPI and Swagger.
     /// </summary>
+    /// Should be called at the end of <see cref="AddApiVersioningExtension"/>
     /// <param name="builder"></param>
     private static void AddOpenAPIExtension(WebApplicationBuilder builder)
     {
@@ -202,6 +204,28 @@ internal static class WebApplicationBuilderExtension
             var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
 
             setupAction.IncludeXmlComments(xmlCommentsFullPath);
+
+            setupAction.AddSecurityDefinition("TodoAPIBearerAuth", new()
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                Description = "Set HTTP Authorization header to Bearer with a valid token"
+            });
+
+            setupAction.AddSecurityRequirement(new() 
+            {
+                {
+                    new()
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "TodoAPIBearerAuth"
+                        }
+                    },
+                    new List<string>()
+                }
+            });
         });
     }
 }

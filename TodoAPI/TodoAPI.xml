@@ -103,8 +103,9 @@
         </member>
         <member name="M:TodoAPI.Extensions.WebApplicationBuilderExtension.AddOpenAPIExtension(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
-            Should be called after <see cref="M:TodoAPI.Extensions.WebApplicationBuilderExtension.AddApiVersioningExtension(Microsoft.AspNetCore.Builder.WebApplicationBuilder)"/>
+            Used to document the api using OpenAPI and Swagger.
             </summary>
+            Should be called at the end of <see cref="M:TodoAPI.Extensions.WebApplicationBuilderExtension.AddApiVersioningExtension(Microsoft.AspNetCore.Builder.WebApplicationBuilder)"/>
             <param name="builder"></param>
         </member>
     </members>
