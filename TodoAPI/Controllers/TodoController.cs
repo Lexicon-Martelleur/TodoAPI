@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +10,13 @@ using TodoAPI.Models.ValueObject;
 
 namespace TodoAPI.Controllers;
 
-[Route(Router.TODOS)]
+
+/// <summary>
+/// Controller class used for endpoint <see cref="Router.Todo"/>.
+/// </summary>
 [ApiController]
+[Route(Router.Todo)]
+[ApiVersion(API.MAJOR_VERSION_ONE)]
 [Authorize(Policy = Authorization.UserPolicy)]
 public class TodoController : ControllerBase
 {
@@ -18,6 +24,13 @@ public class TodoController : ControllerBase
     private readonly ITodoService _todoService;
     private readonly IClaimService _claimService;
 
+    /// <summary>
+    /// Constructor used to inject dependencies.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="todoService"></param>
+    /// <param name="claimService"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public TodoController(
         ILogger<TodoController> logger,
         ITodoService todoService,
@@ -29,7 +42,16 @@ public class TodoController : ControllerBase
         _claimService = claimService ?? throw new ArgumentNullException(nameof(claimService));
     }
 
+    /// <summary>
+    /// Used to get todo objects specified by the query string.
+    /// </summary>
+    /// <param name="query">A <see cref="TodoQueryDTO"/></param>
+    /// <returns>A <see cref="TodoDTO"/></returns>
+    /// <response code="200">With the requested todo objects</response>
+    /// <response code="401">If not authenticated</response>
     [HttpGet(Name = "GetTodos")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<IEnumerable<TodoDTO>>> GetTodos(
         [FromQuery] TodoQueryDTO query
     )
@@ -42,7 +64,18 @@ public class TodoController : ControllerBase
         return Ok(todos ?? []);
     }
 
+    /// <summary>
+    /// Used to get a specified todo by a id parameter.
+    /// </summary>
+    /// <param name="id">A todo id</param>
+    /// <returns>A <see cref="TodoDTO"/></returns>
+    /// <response code="200">With the specified todo object</response>
+    /// <response code="401">If not authenticated</response>
+    /// <response code="404">If not find</response>
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTodo(
         [FromRoute] int id)
     {
@@ -56,7 +89,16 @@ public class TodoController : ControllerBase
         return Ok(todo);
     }
 
+    /// <summary>
+    /// Used to create a todo specified from the body.
+    /// </summary>
+    /// <param name="todo">A <see cref="TodoDTO"/></param>
+    /// <returns>A <see cref="TodoDTO"/></returns>
+    /// <response code="201">With the created todo object</response>
+    /// <response code="401">If not authenticated</response>
     [HttpPost(Name = "CreateTodo")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<TodoDTO>> CreateTodo(
         [FromBody] TodoDTO todo)
     {
@@ -70,6 +112,18 @@ public class TodoController : ControllerBase
         return CreatedAtRoute("CreateTodo", createdTodo);
     }
 
+    /// <summary>
+    /// Used to updated a todo specified from the body.
+    /// </summary>
+    /// <param name="id">A todo id</param>
+    /// <param name="todo">A <see cref="TodoDTO"/></param>
+    /// <returns>A <see cref="TodoDTO"/></returns>
+    /// <response code="200">With the updated todo object</response>
+    /// <response code="401">If not authenticated</response>
+    /// <response code="404">If not find</response>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPut("{id}")]
     public async Task<ActionResult<TodoDTO>> UpdateTodo(
         [FromRoute] int id,
@@ -93,7 +147,19 @@ public class TodoController : ControllerBase
         return Ok(updatedTodo);
     }
 
+    /// <summary>
+    /// Used to patch a todo specified from the body.
+    /// </summary>
+    /// <param name="id">A todo id</param>
+    /// <param name="todoPatchDocument">A <see cref="JsonPatchDocument"/></param>
+    /// <returns>A <see cref="TodoDTO"/></returns>
+    /// <response code="200">With the patched todo object</response>
+    /// <response code="401">If not authenticated</response>
+    /// <response code="404">If not find</response>
     [HttpPatch("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<TodoDTO>> PatchTodo(
         [FromRoute] int id,
         [FromBody] JsonPatchDocument<TodoVO> todoPatchDocument
@@ -132,9 +198,19 @@ public class TodoController : ControllerBase
         return Ok(todoToPatchWith);
     }
 
-
+    /// <summary>
+    /// Used to delete a todo specified from the id parameter.
+    /// </summary>
+    /// <param name="id">A todo id</param>
+    /// <returns>A <see cref="TodoDeleteDTO"/></returns>
+    /// <response code="200">With the deleted id object</response>
+    /// <response code="401">If not authenticated</response>
+    /// <response code="404">If not find</response>
     [HttpDelete("{id}")]
-    public async Task<ActionResult<TodoDTO>> DeleteTodo(
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TodoDeleteDTO>> DeleteTodo(
         [FromRoute] int id)
     {
         var validatedUserId = _claimService.GetValidUserIdFromClaims(User);
@@ -154,6 +230,6 @@ public class TodoController : ControllerBase
         }
 
         await _todoService.DeleteTodo(id);
-        return Ok(new { id });
+        return Ok(new TodoDeleteDTO(){ Id = id });
     }
 }

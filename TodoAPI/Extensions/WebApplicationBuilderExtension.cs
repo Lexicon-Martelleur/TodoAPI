@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Reflection;
 using TodoAPI.Config;
 using TodoAPI.Constants;
 using TodoAPI.DbContext.Contexts;
@@ -61,15 +64,7 @@ internal static class WebApplicationBuilderExtension
             .AddNewtonsoftJson() // Instead of System.Text.Json, used to support patch request
             .AddXmlDataContractSerializerFormatters(); // Used to support XML format.
     }
-
-    internal static void AddSwaggerServiceExtension(this WebApplicationBuilder builder)
-    {
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-        builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddSwaggerGen();
-    }
-
+    
     internal static void AddDBContextExtension(this WebApplicationBuilder builder)
     {
         if (builder.Environment.IsDevelopment())
@@ -158,6 +153,55 @@ internal static class WebApplicationBuilderExtension
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy(Authorization.UserPolicy, policy => policy.RequireRole(Authorization.UserRole));
+        });
+    }
+
+    internal static void AddApiVersioningExtension(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddApiVersioning(setupAction =>
+        {
+            setupAction.ReportApiVersions = true;
+            setupAction.AssumeDefaultVersionWhenUnspecified = true;
+            setupAction.DefaultApiVersion = new ApiVersion(
+                API.MAJOR_VERSION_ONE, API.MINOR_VERSION_ONE);
+        }).AddMvc().AddApiExplorer(setupAction =>
+        {
+            setupAction.SubstituteApiVersionInUrl = true;
+        });
+
+        AddOpenAPIExtension(builder);
+    }
+
+    /// <summary>
+    /// Should be called after <see cref="AddApiVersioningExtension"/>
+    /// </summary>
+    /// <param name="builder"></param>
+    private static void AddOpenAPIExtension(WebApplicationBuilder builder)
+    {
+        var apiVersionDescriptionProvider = builder.Services.BuildServiceProvider()
+            .GetRequiredService<IApiVersionDescriptionProvider>();
+
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddSwaggerGen(setupAction =>
+        {
+            foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions)
+            {
+                setupAction.SwaggerDoc(
+                    $"{description.GroupName}",
+                    new()
+                    {
+                        Title = "Todo API",
+                        Version = description.ApiVersion.ToString(),
+                        Description = "An api to manage your daily todos."
+                    });
+            }
+
+            var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+            setupAction.IncludeXmlComments(xmlCommentsFullPath);
         });
     }
 }

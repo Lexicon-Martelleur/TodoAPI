@@ -2,7 +2,9 @@
 
 internal class Router
 {
-    internal const string TODOS = "api/todo";
+    private const string BaseRoute = "api/v{version:apiVersion}";
+    
+    internal const string Authenticate = BaseRoute + "/authenticate";
 
-    internal const string AUTHENTICATE = "api/authenticate";
+    internal const string Todo = BaseRoute + "/todo";
 }

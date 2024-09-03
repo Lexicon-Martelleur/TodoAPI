@@ -12,7 +12,7 @@ public class ClaimService : IClaimService
 
         if (claimedSubject == null ||
             !int.TryParse(claimedSubject, out int claimedUserId) ||
-            claimedUserId != todo.UserId)
+            claimedUserId != todo.AuthorId)
         {
             return null;
         }

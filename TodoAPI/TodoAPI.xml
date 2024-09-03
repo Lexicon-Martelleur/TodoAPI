@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TodoAPI</name>
+    </assembly>
+    <members>
+        <member name="T:TodoAPI.Controllers.AuthenticationController">
+            <summary>
+            Controller class used for endpoint <see cref="F:TodoAPI.Constants.Router.Authenticate"/>.
+            </summary>
+        </member>
+        <member name="M:TodoAPI.Controllers.AuthenticationController.#ctor(TodoAPI.Models.Services.IAuthenticationService,Microsoft.Extensions.Logging.ILogger{TodoAPI.Controllers.TodoController})">
+            <summary>
+            Constructor used to inject dependencies.
+            </summary>
+            <param name="service"></param>
+            <param name="logger"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:TodoAPI.Controllers.AuthenticationController.Authenticate(TodoAPI.Models.DTO.UserAuthenticationDTO)">
+            <summary>
+            Authenticate user by user credentials;
+            Password, Email, and User name.
+            </summary>
+            <param name="authentication"></param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TokenDTO"/></returns>
+            <response code="200">With the newly created token object</response>
+            <response code="401">If the authentication fails</response>
+        </member>
+        <member name="T:TodoAPI.Controllers.TodoController">
+            <summary>
+            Controller class used for endpoint <see cref="F:TodoAPI.Constants.Router.Todo"/>.
+            </summary>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.#ctor(Microsoft.Extensions.Logging.ILogger{TodoAPI.Controllers.TodoController},TodoAPI.Models.Services.ITodoService,TodoAPI.Models.Services.IClaimService)">
+            <summary>
+            Constructor used to inject dependencies.
+            </summary>
+            <param name="logger"></param>
+            <param name="todoService"></param>
+            <param name="claimService"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.GetTodos(TodoAPI.Models.DTO.TodoQueryDTO)">
+            <summary>
+            Used to get todo objects specified by the query string.
+            </summary>
+            <param name="query">A <see cref="T:TodoAPI.Models.DTO.TodoQueryDTO"/></param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></returns>
+            <response code="200">With the requested todo objects</response>
+            <response code="401">If not authenticated</response>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.GetTodo(System.Int32)">
+            <summary>
+            Used to get a specified todo by a id parameter.
+            </summary>
+            <param name="id">A todo id</param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></returns>
+            <response code="200">With the specified todo object</response>
+            <response code="401">If not authenticated</response>
+            <response code="404">If not find</response>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.CreateTodo(TodoAPI.Models.DTO.TodoDTO)">
+            <summary>
+            Used to create a todo specified from the body.
+            </summary>
+            <param name="todo">A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></returns>
+            <response code="201">With the created todo object</response>
+            <response code="401">If not authenticated</response>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.UpdateTodo(System.Int32,TodoAPI.Models.DTO.TodoDTO)">
+            <summary>
+            Used to updated a todo specified from the body.
+            </summary>
+            <param name="id">A todo id</param>
+            <param name="todo">A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></returns>
+            <response code="200">With the updated todo object</response>
+            <response code="401">If not authenticated</response>
+            <response code="404">If not find</response>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.PatchTodo(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{TodoAPI.Models.ValueObject.TodoVO})">
+            <summary>
+            Used to patch a todo specified from the body.
+            </summary>
+            <param name="id">A todo id</param>
+            <param name="todoPatchDocument">A <see cref="T:Microsoft.AspNetCore.JsonPatch.JsonPatchDocument"/></param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TodoDTO"/></returns>
+            <response code="200">With the patched todo object</response>
+            <response code="401">If not authenticated</response>
+            <response code="404">If not find</response>
+        </member>
+        <member name="M:TodoAPI.Controllers.TodoController.DeleteTodo(System.Int32)">
+            <summary>
+            Used to delete a todo specified from the id parameter.
+            </summary>
+            <param name="id">A todo id</param>
+            <returns>A <see cref="T:TodoAPI.Models.DTO.TodoDeleteDTO"/></returns>
+            <response code="200">With the deleted id object</response>
+            <response code="401">If not authenticated</response>
+            <response code="404">If not find</response>
+        </member>
+        <member name="M:TodoAPI.Extensions.WebApplicationBuilderExtension.AddOpenAPIExtension(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
+            <summary>
+            Should be called after <see cref="M:TodoAPI.Extensions.WebApplicationBuilderExtension.AddApiVersioningExtension(Microsoft.AspNetCore.Builder.WebApplicationBuilder)"/>
+            </summary>
+            <param name="builder"></param>
+        </member>
+    </members>
+</doc>

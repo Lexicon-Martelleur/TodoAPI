@@ -20,8 +20,6 @@ public class Program
         
         builder.AddAndConfigureControllersExtension();
         
-        builder.AddSwaggerServiceExtension();
-        
         builder.AddDBContextExtension();
         
         builder.AddServicesExtension();
@@ -31,7 +29,9 @@ public class Program
         builder.AddAuthenticationExtension();
 
         builder.AddAuthorizationExtension();
-        
+
+        builder.AddApiVersioningExtension();
+
         return builder.Build();
     }
 
@@ -44,8 +44,7 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             await app.UseDataSeedAsyncExtension();
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerExtension();
         }
         else
         {

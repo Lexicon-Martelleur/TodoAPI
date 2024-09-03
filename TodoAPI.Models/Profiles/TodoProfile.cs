@@ -15,7 +15,7 @@ public class TodoProfile : Profile
             .ForPath(dest => dest.Todo.Done, opt => opt.MapFrom(src => src.Done))
             .ForMember(dest => dest.Timestamp, opt => opt.MapFrom(src => src.TimeStamp))
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserAuthenticationId));
+            .ForMember(dest => dest.AuthorId, opt => opt.MapFrom(src => src.UserAuthenticationId));
 
         CreateMap<TodoDTO, TodoEntity>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())
@@ -24,7 +24,7 @@ public class TodoProfile : Profile
             .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Todo.Author))
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Todo.Description))
             .ForMember(dest => dest.Done, opt => opt.MapFrom(src => src.Todo.Done))
-            .ForMember(dest => dest.UserAuthenticationId, opt => opt.MapFrom(src => src.UserId));
+            .ForMember(dest => dest.UserAuthenticationId, opt => opt.MapFrom(src => src.AuthorId));
 
         CreateMap<UserAuthenticationDTO, UserAuthenticationEntity>();
 

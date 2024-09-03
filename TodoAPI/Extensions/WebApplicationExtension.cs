@@ -47,4 +47,19 @@ internal static class WebApplicationExtension
             application.UseCors(ApplicationConfiguration.CorsPolicies.Prod);
         }
     }
+
+    internal static void UseSwaggerExtension(this WebApplication application)
+    {
+        application.UseSwagger();
+        application.UseSwaggerUI(setupAction =>
+        {
+            var descriptions = application.DescribeApiVersions();
+            foreach (var description in descriptions)
+            {
+                setupAction.SwaggerEndpoint(
+                    $"/swagger/{description.GroupName}/swagger.json",
+                    description.GroupName.ToUpperInvariant());
+            }
+        });
+    }
 }

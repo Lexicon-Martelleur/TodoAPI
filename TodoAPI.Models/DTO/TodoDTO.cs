@@ -9,7 +9,7 @@ public record class TodoDTO
     public int Id { get; init; }
 
     [Required]
-    public required int UserId { get; init; }
+    public required int AuthorId { get; init; }
 
     [Required]
     [TimestampValidation]
