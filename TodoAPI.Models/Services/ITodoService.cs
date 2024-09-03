@@ -13,7 +13,11 @@ namespace TodoAPI.Models.Services
         Task<bool> PatchTodo(int id, int claimedUserId, TodoDTO todoVO);
         Task<TodoDTO?> GetTodoEntityWithClaimedId(
             int id,
+            int claimedUserId);
+
+        Task<TodoDTO?> GetTodoEntityToPatchWith(
+            int id,
             int claimedUserId,
-            Func<TodoDTO, bool> applyPatchFunction);
+            Func<TodoDTO?, bool> applyPatchFunction);
     }
 }

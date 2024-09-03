@@ -88,15 +88,23 @@ public class TodoService : ITodoService
 
     public async Task<TodoDTO?> GetTodoEntityWithClaimedId(
         int id,
-        int claimedUserId,
-        Func<TodoDTO, bool> applyPatchFunction){
+        int claimedUserId)
+    {
         var todo = await _repository.GetTodoEntityWithClaimedId(
             id,
             claimedUserId);
 
         if (todo == null) { return null; }
 
-        var todoDTO = _mapper.Map<TodoDTO>(todo);
+        return _mapper.Map<TodoDTO>(todo);
+    }
+
+    public async Task<TodoDTO?> GetTodoEntityToPatchWith(
+        int id,
+        int claimedUserId,
+        Func<TodoDTO?, bool> applyPatchFunction) {
+
+        var todoDTO = await GetTodoEntityWithClaimedId(id, claimedUserId);
 
         var isValidPatch = applyPatchFunction(todoDTO);
         

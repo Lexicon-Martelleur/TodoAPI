@@ -99,6 +99,8 @@ internal static class WebApplicationBuilderExtension
         builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
         builder.Services.AddScoped<IAuthenticationRepository, AuthenticationRepository>();
 
+        builder.Services.AddScoped<IClaimService, ClaimService>();
+
         builder.Services.AddScoped<ISecurityService, SecurityService>();
 
         builder.Services.AddScoped<
