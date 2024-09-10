@@ -153,7 +153,7 @@ internal static class WebApplicationBuilderExtension
     {
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy(Authorization.UserPolicy, policy => policy.RequireRole(Authorization.UserRole));
+            options.AddPolicy(AuthorizationRules.UserPolicy, policy => policy.RequireRole(AuthorizationRules.UserRole));
         });
     }
 

@@ -5,13 +5,13 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI", "TodoAPI\TodoAPI.csproj", "{6D31E067-D884-4EAE-8DEE-2EB5F10E8ADC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoAPI.Entities", "TodoAPI.Entities\TodoAPI.Entities.csproj", "{D6F90BB4-1774-4656-AEF7-0CDF4F430D61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Entities", "TodoAPI.Entities\TodoAPI.Entities.csproj", "{D6F90BB4-1774-4656-AEF7-0CDF4F430D61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoAPI.DbContext", "TodoAPI.DbContext\TodoAPI.DbContext.csproj", "{2FFD1D1C-CAA9-4098-A6A6-86393550AE1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Infrastructure", "TodoAPI.Infrastructure\TodoAPI.Infrastructure.csproj", "{2FFD1D1C-CAA9-4098-A6A6-86393550AE1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoAPI.Models", "TodoAPI.Models\TodoAPI.Models.csproj", "{E4510706-6123-45B9-9CDD-7DBD5C9BDDD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Models", "TodoAPI.Models\TodoAPI.Models.csproj", "{E4510706-6123-45B9-9CDD-7DBD5C9BDDD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoAPI.Lib", "TodoAPI.Lib\TodoAPI.Lib.csproj", "{2574EEB6-832D-4EE6-90B2-788CBECECF4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Lib", "TodoAPI.Lib\TodoAPI.Lib.csproj", "{2574EEB6-832D-4EE6-90B2-788CBECECF4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

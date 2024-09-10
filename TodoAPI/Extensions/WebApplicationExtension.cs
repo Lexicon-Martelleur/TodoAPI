@@ -56,8 +56,9 @@ internal static class WebApplicationExtension
             var descriptions = application.DescribeApiVersions();
             foreach (var description in descriptions)
             {
+                var urlSwaggerJSON = $"/swagger/{description.GroupName}/swagger.json";
                 setupAction.SwaggerEndpoint(
-                    $"/swagger/{description.GroupName}/swagger.json",
+                    urlSwaggerJSON,
                     description.GroupName.ToUpperInvariant());
             }
         });

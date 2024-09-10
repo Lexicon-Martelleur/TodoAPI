@@ -52,7 +52,7 @@ public class SecurityService : ISecurityService
         List<Claim> claims = [
             new(SecurityConfig.ClaimSubject, userAuthentication.Id.ToString()),
             new(SecurityConfig.ClaimEmail, userAuthentication.Email),
-            new(SecurityConfig.ClaimRole, Authorization.UserRole)
+            new(SecurityConfig.ClaimRole, AuthorizationRules.UserRole)
         ];
 
         var token = new JwtSecurityToken(

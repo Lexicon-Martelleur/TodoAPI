@@ -1,6 +1,6 @@
 ﻿namespace TodoAPI.Constants;
 
-internal static class Authorization
+internal static class AuthorizationRules
 {
     internal const string UserPolicy = "UserOnly";
 
