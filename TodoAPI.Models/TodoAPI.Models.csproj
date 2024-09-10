@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TodoAPI.Entities\TodoAPI.Entities.csproj" />
-    <ProjectReference Include="..\TodoAPI.Lib\TodoAPI.Lib.csproj" />
   </ItemGroup>
 
 </Project>

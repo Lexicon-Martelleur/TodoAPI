@@ -11,7 +11,6 @@ using TodoAPI.Constants;
 using TodoAPI.DbContext.Contexts;
 using TodoAPI.DbContext.Repositories;
 using TodoAPI.Entities;
-using TodoAPI.Lib;
 using TodoAPI.Models.Profiles;
 using TodoAPI.Models.Repositories;
 using TodoAPI.Models.Services;

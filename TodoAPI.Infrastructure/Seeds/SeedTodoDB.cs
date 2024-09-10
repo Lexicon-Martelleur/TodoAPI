@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TodoAPI.DbContext.Contexts;
 using TodoAPI.Entities;
-using TodoAPI.Lib;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.DbContext.Seeds;
 

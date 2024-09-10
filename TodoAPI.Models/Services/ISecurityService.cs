@@ -1,6 +1,6 @@
 ﻿using TodoAPI.Entities;
 
-namespace TodoAPI.Lib;
+namespace TodoAPI.Models.Services;
 
 public interface ISecurityService
 {

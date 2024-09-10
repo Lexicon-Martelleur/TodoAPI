@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Infrastructure", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Models", "TodoAPI.Models\TodoAPI.Models.csproj", "{E4510706-6123-45B9-9CDD-7DBD5C9BDDD9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoAPI.Lib", "TodoAPI.Lib\TodoAPI.Lib.csproj", "{2574EEB6-832D-4EE6-90B2-788CBECECF4E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{E4510706-6123-45B9-9CDD-7DBD5C9BDDD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4510706-6123-45B9-9CDD-7DBD5C9BDDD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4510706-6123-45B9-9CDD-7DBD5C9BDDD9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2574EEB6-832D-4EE6-90B2-788CBECECF4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2574EEB6-832D-4EE6-90B2-788CBECECF4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2574EEB6-832D-4EE6-90B2-788CBECECF4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2574EEB6-832D-4EE6-90B2-788CBECECF4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

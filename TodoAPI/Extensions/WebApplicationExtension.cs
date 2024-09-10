@@ -2,7 +2,7 @@
 using TodoAPI.Constants;
 using TodoAPI.DbContext.Contexts;
 using TodoAPI.DbContext.Seeds;
-using TodoAPI.Lib;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.Extensions;
 

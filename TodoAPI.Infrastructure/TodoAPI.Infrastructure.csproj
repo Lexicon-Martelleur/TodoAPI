@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TodoAPI.Entities\TodoAPI.Entities.csproj" />
-    <ProjectReference Include="..\TodoAPI.Lib\TodoAPI.Lib.csproj" />
     <ProjectReference Include="..\TodoAPI.Models\TodoAPI.Models.csproj" />
   </ItemGroup>
 

@@ -38,7 +38,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TodoAPI.Infrastructure\TodoAPI.Infrastructure.csproj" />
-    <ProjectReference Include="..\TodoAPI.Lib\TodoAPI.Lib.csproj" />
     <ProjectReference Include="..\TodoAPI.Models\TodoAPI.Models.csproj" />
   </ItemGroup>
 

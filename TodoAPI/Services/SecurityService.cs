@@ -5,7 +5,7 @@ using System.Security.Claims;
 using TodoAPI.Config;
 using TodoAPI.Constants;
 using TodoAPI.Entities;
-using TodoAPI.Lib;
+using TodoAPI.Models.Services;
 
 namespace TodoAPI.Services;
 
